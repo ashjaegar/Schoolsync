@@ -17,7 +17,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'client')));
+const staticPath = path.join(__dirname, 'client');
+console.log('📂 Serving static files from:', staticPath);
+app.use(express.static(staticPath));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/school_erp';
