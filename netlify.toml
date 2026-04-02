@@ -1,9 +1,9 @@
 [build]
-  # The directory where your frontend files live
-  base = "server/client"
+  # The directory where package.json lives
+  base = "server"
   
   # The directory to publish (relative to base)
-  publish = "."
+  publish = "client"
 
 # Add any environment variables if needed
 [build.environment]
