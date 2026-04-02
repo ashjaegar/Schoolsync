@@ -1,0 +1,10 @@
+[build]
+  # The directory where your frontend files live
+  base = "server/client"
+  
+  # The directory to publish (relative to base)
+  publish = "."
+
+# Add any environment variables if needed
+[build.environment]
+  NODE_VERSION = "20"
