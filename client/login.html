@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – School Management System</title>
+  <meta name="description" content="Login to the School Management System SaaS platform." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="brand-icon">🏫</div>
+        <h1>School<span>MS</span></h1>
+      </div>
+      <p class="auth-subtitle">Sign in to your school portal</p>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="principal@yourschool.edu" autocomplete="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+        </div>
+
+        <div class="alert alert-error" id="alertMsg"></div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          Sign In
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Register your school</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '/api';
+
+    // Redirect if already logged in
+    if (localStorage.getItem('school_id')) {
+      window.location.href = 'dashboard.html';
+    }
+
+    const form = document.getElementById('loginForm');
+    const alertMsg = document.getElementById('alertMsg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function showAlert(msg, type = 'error') {
+      alertMsg.textContent = msg;
+      alertMsg.className = `alert alert-${type} show`;
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.innerHTML = loading
+        ? '<span class="spinner"></span> Signing in…'
+        : 'Sign In';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertMsg.className = 'alert';
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        return showAlert('Please fill in all fields.');
+      }
+
+      setLoading(true);
+      try {
+        const res  = await fetch(`${API}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          localStorage.setItem('school_id',   data.school_id);
+          localStorage.setItem('school_name', data.school_name);
+          window.location.href = 'dashboard.html';
+        } else {
+          showAlert(data.message || 'Login failed. Please try again.');
+        }
+      } catch (err) {
+        showAlert('Unable to connect to server. Make sure the server is running.');
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>

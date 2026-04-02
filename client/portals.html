@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Portals - Jindal Adarsh</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f4f9; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    
+    .header {
+      background: #0f172a; border-bottom: 4px solid #cc0000;
+      color: #fff; width: 100%; padding: 25px; text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .header h1 { font-size: 2rem; margin-bottom: 5px; font-weight: 800; }
+    .header p { color: #94a3b8; font-size: 0.95rem; }
+
+    .portals-sec { max-width: 1200px; margin: 60px auto; padding: 0 40px; width: 100%; }
+    .p-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    
+    .p-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06); transition: transform 0.3s; border-bottom: 5px solid transparent; text-decoration: none; display: block; }
+    .p-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+    
+    .p-card.s-stu { border-bottom-color: #f59e0b; }
+    .p-card.s-par { border-bottom-color: #0ea5e9; }
+    .p-card.s-tea { border-bottom-color: #1e3a8a; }
+    .p-card.s-adm { border-bottom-color: #16a34a; }
+    
+    .p-img { width: 100%; height: 200px; object-fit: cover; }
+    .p-text { padding: 25px; text-align: center; }
+    .p-text h3 { font-size: 1.4rem; color: #0f172a; margin-bottom: 5px; font-weight: 800; }
+    .p-text p { font-size: 0.9rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+
+    .back-btn { margin-top: 40px; color: #64748b; text-decoration: none; font-weight: 600; display: inline-block; transition: 0.2s; }
+    .back-btn:hover { color: #1e3a8a; }
+  </style>
+  <script>
+    if (!localStorage.getItem('school_id')) {
+      location.href = 'index.html'; // Kick out if didn't pass through gateway
+    }
+  </script>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Jindal Adarsh ERP Portals</h1>
+    <p>Select your role to login securely to the management system.</p>
+  </div>
+
+  <div class="portals-sec">
+    <div class="p-grid">
+      <a href="student-login.html" class="p-card s-stu">
+        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop" class="p-img" alt="Student">
+        <div class="p-text">
+          <h3>Student Portal</h3><p>Manage Academics</p>
+        </div>
+      </a>
+      <a href="parent-login.html" class="p-card s-par">
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop" class="p-img" alt="Parent">
+        <div class="p-text">
+          <h3>Parent Portal</h3><p>Track Progress</p>
+        </div>
+      </a>
+      <a href="teacher-login.html" class="p-card s-tea">
+        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop" class="p-img" alt="Teacher">
+        <div class="p-text">
+          <h3>Teacher Portal</h3><p>Grade & Teach</p>
+        </div>
+      </a>
+      <a href="admin-login.html" class="p-card s-adm">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1974&auto=format&fit=crop" class="p-img" alt="Admin">
+        <div class="p-text">
+          <h3>Admin Portal</h3><p>Platform Control</p>
+        </div>
+      </a>
+    </div>
+    
+    <div style="text-align: center;">
+      <a href="index.html" class="back-btn">← Back to School Website</a>
+    </div>
+  </div>
+
+</body>
+</html>

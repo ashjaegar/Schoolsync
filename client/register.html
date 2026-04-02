@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – School Management System</title>
+  <meta name="description" content="Register your school on the School Management System platform." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="brand-icon">🏫</div>
+        <h1>School<span>MS</span></h1>
+      </div>
+      <p class="auth-subtitle">Create your school's account</p>
+
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="school_name">School Name</label>
+          <input type="text" id="school_name" name="school_name" placeholder="Springfield High School" autocomplete="organization" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="principal@yourschool.edu" autocomplete="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password <small style="color:var(--text-dim)">(min 6 characters)</small></label>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password" required />
+        </div>
+
+        <div class="alert alert-error"   id="alertError"></div>
+        <div class="alert alert-success" id="alertSuccess"></div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          Create Account
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Already registered? <a href="login.html">Sign in here</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '/api';
+
+    const form         = document.getElementById('registerForm');
+    const alertError   = document.getElementById('alertError');
+    const alertSuccess = document.getElementById('alertSuccess');
+    const submitBtn    = document.getElementById('submitBtn');
+
+    function showError(msg) {
+      alertError.textContent = msg;
+      alertError.className = 'alert alert-error show';
+      alertSuccess.className = 'alert';
+    }
+
+    function showSuccess(msg) {
+      alertSuccess.textContent = msg;
+      alertSuccess.className = 'alert alert-success show';
+      alertError.className = 'alert';
+    }
+
+    function setLoading(loading) {
+      submitBtn.disabled = loading;
+      submitBtn.innerHTML = loading
+        ? '<span class="spinner"></span> Creating account…'
+        : 'Create Account';
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertError.className   = 'alert';
+      alertSuccess.className = 'alert';
+
+      const school_name = document.getElementById('school_name').value.trim();
+      const email       = document.getElementById('email').value.trim();
+      const password    = document.getElementById('password').value;
+
+      if (!school_name || !email || !password) {
+        return showError('All fields are required.');
+      }
+      if (!isValidEmail(email)) {
+        return showError('Please enter a valid email address.');
+      }
+      if (password.length < 6) {
+        return showError('Password must be at least 6 characters.');
+      }
+
+      setLoading(true);
+      try {
+        const res  = await fetch(`${API}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ school_name, email, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showSuccess('Registration successful! Redirecting to login…');
+          form.reset();
+          setTimeout(() => { window.location.href = 'login.html'; }, 1800);
+        } else {
+          showError(data.message || 'Registration failed. Please try again.');
+        }
+      } catch (err) {
+        showError('Unable to connect to server. Make sure the server is running.');
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Register School – SchoolERP</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="auth-layout" style="align-items:center;justify-content:center">
+    <div class="auth-card" style="max-width:440px">
+      <a class="back-link" href="index.html" style="color:#64748b">← Back to Home</a>
+      <div class="auth-card-header">
+        <div class="badge">✨ New School</div>
+        <h2>Register Your School</h2>
+        <p>Create your school's ERP account in seconds</p>
+      </div>
+      <form id="regForm" novalidate>
+        <div class="form-group">
+          <label>School Name</label>
+          <input type="text" id="school_name" placeholder="e.g. Springfield High School" required/>
+        </div>
+        <div class="form-group">
+          <label>Admin Email</label>
+          <input type="email" id="email" placeholder="principal@yourschool.edu" required/>
+        </div>
+        <div class="form-group">
+          <label>Password <small style="font-weight:400;text-transform:none;letter-spacing:0">(min 6 chars)</small></label>
+          <input type="password" id="password" placeholder="••••••••" required/>
+        </div>
+        <div class="alert alert-error"   id="errMsg"></div>
+        <div class="alert alert-success" id="okMsg"></div>
+        <button type="submit" class="btn btn-primary" id="submitBtn">Create Account</button>
+      </form>
+      <p class="auth-footer-link">Already registered? <a href="admin-login.html">Sign in</a></p>
+    </div>
+  </div>
+  <script>
+    document.getElementById('regForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = document.getElementById('errMsg'), ok = document.getElementById('okMsg');
+      err.className = ok.className = 'alert';
+      const school_name = document.getElementById('school_name').value.trim();
+      const email       = document.getElementById('email').value.trim();
+      const password    = document.getElementById('password').value;
+      if (!school_name || !email || !password) { err.textContent='All fields required.'; err.className='alert alert-error show'; return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent='Invalid email.'; err.className='alert alert-error show'; return; }
+      if (password.length < 6) { err.textContent='Password must be at least 6 characters.'; err.className='alert alert-error show'; return; }
+      const btn = document.getElementById('submitBtn');
+      btn.disabled=true; btn.textContent='Creating…';
+      try {
+        const res  = await fetch('/api/school/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({school_name,email,password}) });
+        const data = await res.json();
+        if (data.success) {
+          ok.textContent='✅ Registered! Redirecting to login…'; ok.className='alert alert-success show';
+          setTimeout(()=>location.href='admin-login.html', 1800);
+        }
+        else { err.textContent=data.message; err.className='alert alert-error show'; }
+      } catch { err.textContent='Cannot reach server.'; err.className='alert alert-error show'; }
+      finally { btn.disabled=false; btn.textContent='Create Account'; }
+    });
+  </script>
+</body>
+</html>

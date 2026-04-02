@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Staff Dashboard – SchoolERP</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="erp-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo"><span>🧑‍💼</span><strong>SchoolERP</strong></div>
+      <div class="brand-school" id="sbName">Staff Portal</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Portal</div>
+      <button class="nav-item active" onclick="show('overview',this)"><span class="nav-icon">🏠</span> Dashboard</button>
+      <button class="nav-item" onclick="show('notices',this)"><span class="nav-icon">📢</span> Notices</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item" onclick="logout()"><span class="nav-icon">🚪</span> Logout</button>
+    </div>
+  </aside>
+  <div class="main-content">
+    <header class="top-bar">
+      <h1 id="pageTitle">Staff Dashboard</h1>
+      <div class="top-bar-right">
+        <div><div class="user-name" id="tbName">—</div><div class="user-role">Staff · <span id="tbRole">—</span></div></div>
+        <div class="avatar" id="tbAv" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">S</div>
+      </div>
+    </header>
+    <div class="page-content">
+      <div class="page-section active" id="sec-overview">
+        <div style="margin-bottom:28px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)">
+          <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:8px">Welcome, <span id="wlcName" style="color:#7c3aed">—</span>! 🧑‍💼</h2>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
+            <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:12px 20px">
+              <div style="font-size:.75rem;color:#5b21b6;font-weight:700;text-transform:uppercase;margin-bottom:4px">Role</div>
+              <div style="font-size:1.1rem;font-weight:700" id="roleDisplay">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card" onclick="show('notices',null)"><div class="mc-icon">📢</div><div class="mc-title">School Notices</div><div class="mc-sub">View announcements</div></div>
+        </div>
+        <div class="panel" style="margin-top:8px">
+          <div class="panel-head"><h2>📢 Latest Notices</h2></div>
+          <div class="panel-body">
+            <div class="notice-list-public" id="quickNotices"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-section" id="sec-notices">
+        <h2 class="section-title">📢 All School Notices</h2>
+        <div class="notice-list-public" id="allNotices"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+        <div class="empty-state" id="noticeEmpty" style="display:none"><div class="es-icon">📢</div><p>No notices.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const API='/api';
+const SFID=localStorage.getItem('staff_id'),SCHID=localStorage.getItem('school_id');
+const UNAME=localStorage.getItem('user_name'),UROLE=localStorage.getItem('user_role_title');
+if(!SFID||localStorage.getItem('role')!=='staff') location.href='staff-login.html';
+document.getElementById('sbName').textContent=UNAME||'Staff';
+document.getElementById('tbName').textContent=UNAME||'—';
+document.getElementById('tbRole').textContent=UROLE||'—';
+document.getElementById('tbAv').textContent=(UNAME||'S')[0].toUpperCase();
+document.getElementById('wlcName').textContent=UNAME||'Staff';
+document.getElementById('roleDisplay').textContent=UROLE||'—';
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtDate(iso){return iso?new Date(iso).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';}
+function logout(){['staff_id','school_id','user_name','user_role_title','role'].forEach(k=>localStorage.removeItem(k));location.href='staff-login.html';}
+function show(name,btn){
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');
+  document.getElementById('pageTitle').textContent=name==='notices'?'Notices':'Staff Dashboard';
+  if(name==='notices')loadNotices('allNotices','noticeEmpty');
+}
+function renderNotices(notices,containerId){
+  const c=document.getElementById(containerId);
+  if(!notices||!notices.length){c.innerHTML='<p style="color:var(--text-muted);font-size:.85rem">No notices available.</p>';return;}
+  c.innerHTML=notices.slice(0,8).map(n=>`<div class="notice-item ${n.priority.toLowerCase()}"><div class="ni-title">${esc(n.title)}</div><div class="ni-content">${esc(n.content)}</div><div class="ni-meta">📅 ${fmtDate(n.createdAt)}</div></div>`).join('');
+}
+async function loadNotices(containerId='quickNotices',emptyId=null){
+  const r=await fetch(`${API}/notices/${SCHID}`);const d=await r.json();
+  if(d.success)renderNotices(d.notices,containerId);
+  if(emptyId&&(!d.success||!d.notices.length))document.getElementById(emptyId).style.display='block';
+}
+loadNotices('quickNotices');
+</script>
+</body></html>

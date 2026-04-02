@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Teacher Login – SchoolERP</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="auth-layout" style="align-items:center;justify-content:center">
+  <div class="auth-card" style="max-width:440px">
+    <a href="index.html" class="back-link" style="color:#64748b">← Back to Website</a>
+    <div class="auth-card-header">
+      <div class="badge" style="background:#f0fdf4;color:#16a34a">🧑‍🏫 Teacher Portal</div>
+      <h2>Teacher Login</h2>
+      <p>Sign in with your teacher ID and password</p>
+    </div>
+    <form id="loginForm" novalidate>
+      <div class="form-group"><label>Teacher Login ID</label><input type="text" id="login_id" placeholder="e.g. TCH2024001" required/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="••••••••" required/></div>
+      <label class="show-pw-row" style="display:flex; justify-content:space-between; width:100%;">
+        <span><input type="checkbox" id="sp"/> Show password</span>
+        <a href="#" onclick="alert('Please contact your school administrator to reset your password.'); return false;" style="color:#2563eb; font-size:0.85rem; text-decoration:none;">Forgot password?</a>
+      </label>
+      <div class="alert alert-error" id="err"></div>
+      <button type="submit" class="btn btn-primary" id="btn" style="background:linear-gradient(135deg,#16a34a,#15803d)">Sign In as Teacher</button>
+    </form>
+    
+    <form id="changePasswordForm" style="display:none;" novalidate>
+      <p style="color:#b91c1c; font-size:0.9rem; margin-bottom:15px; background:#fef2f2; padding:10px; border-radius:6px; font-weight:600;">⚠️ Security Update: You are logging in with a default password. You must set a permanent password to continue.</p>
+      <div class="form-group"><label>New Password</label><input type="password" id="new_password" placeholder="At least 6 characters" required/></div>
+      <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm_password" placeholder="Re-type new password" required/></div>
+      <div class="alert alert-error" id="cpErrMsg"></div>
+      <div class="alert alert-success" id="cpSuccessMsg" style="display:none; background:#dcfce7; color:#166534; padding:12px; border-radius:8px; margin-bottom:15px; font-size:0.9rem;"></div>
+      <button type="submit" class="btn btn-primary" id="cpSubmitBtn" style="background:linear-gradient(135deg,#16a34a,#15803d)">Save & Continue</button>
+    </form>
+    <p class="auth-footer-link">Admin? <a href="admin-login.html">Admin login</a></p>
+  </div>
+</div>
+<script>
+  let pendingUserId = null;
+  if(localStorage.getItem('role')==='teacher') location.href='teacher-dashboard.html';
+  document.getElementById('sp').onchange=e=>document.getElementById('password').type=e.target.checked?'text':'password';
+  
+  document.getElementById('loginForm').addEventListener('submit',async e=>{
+    e.preventDefault();const err=document.getElementById('err');err.className='alert';
+    const login_id=document.getElementById('login_id').value.trim(),password=document.getElementById('password').value;
+    if(!login_id||!password){err.textContent='All fields required.';err.className='alert alert-error show';return;}
+    const btn=document.getElementById('btn');btn.disabled=true;btn.textContent='Signing in…';
+    try{
+      const r=await fetch('/api/teacher/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({login_id,password})});
+      const d=await r.json();
+      
+      if(d.require_password_change){
+        pendingUserId = d.user_id;
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('changePasswordForm').style.display = 'block';
+        return;
+      }
+
+      if(d.success){
+        localStorage.setItem('teacher_id',d.teacher_id);localStorage.setItem('school_id',d.school_id);
+        localStorage.setItem('user_name',d.name);localStorage.setItem('user_subject',d.subject);
+        localStorage.setItem('role','teacher');location.href='teacher-dashboard.html';
+      }else{err.textContent=d.message;err.className='alert alert-error show';}
+    }catch{err.textContent='Cannot reach server.';err.className='alert alert-error show';}
+    finally{btn.disabled=false;btn.textContent='Sign In as Teacher';}
+  });
+
+  document.getElementById('changePasswordForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('cpErrMsg'); err.className = 'alert';
+    const suc = document.getElementById('cpSuccessMsg'); suc.style.display = 'none';
+    const np = document.getElementById('new_password').value;
+    const cp = document.getElementById('confirm_password').value;
+
+    if (!np || !cp) { err.textContent='All fields required.'; err.className='alert alert-error show'; return; }
+    if (np.length < 6) { err.textContent='Password must be at least 6 characters.'; err.className='alert alert-error show'; return; }
+    if (np !== cp) { err.textContent='Passwords do not match.'; err.className='alert alert-error show'; return; }
+
+    const btn = document.getElementById('cpSubmitBtn');
+    btn.disabled=true; btn.textContent='Saving…';
+    try {
+      const res = await fetch('/api/change-password', { 
+        method:'POST', headers:{'Content-Type':'application/json'}, 
+        body:JSON.stringify({ user_id: pendingUserId, role: 'teacher', new_password: np }) 
+      });
+      const data = await res.json();
+      if (data.success) {
+        suc.textContent = 'Password updated successfully! Redirecting to login...';
+        suc.style.display = 'block';
+        setTimeout(() => location.reload(), 2000);
+      } else {
+        err.textContent = data.message; err.className = 'alert alert-error show';
+      }
+    } catch { err.textContent='Cannot reach server.'; err.className='alert alert-error show'; }
+    finally { btn.disabled=false; btn.textContent='Save & Continue'; }
+  });
+</script>
+</body></html>

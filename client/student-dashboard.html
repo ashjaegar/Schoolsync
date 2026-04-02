@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Student Dashboard – SchoolERP</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="erp-layout">
+
+  <!-- ── Sidebar ───────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo"><span>🎓</span><strong>SchoolERP</strong></div>
+      <div class="brand-school" id="sbStudentName">Loading…</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">My Portal</div>
+      <button class="nav-item active" onclick="showSection('overview',this)"><span class="nav-icon">🏠</span> Dashboard</button>
+      <button class="nav-item" onclick="showSection('marks',this)"><span class="nav-icon">📊</span> My Marks</button>
+      <button class="nav-item" onclick="showSection('attendance',this)"><span class="nav-icon">📅</span> My Attendance</button>
+      <button class="nav-item" onclick="showSection('notices',this)"><span class="nav-icon">📢</span> Notices</button>
+      <button class="nav-item" onclick="showSection('assignments',this)"><span class="nav-icon">📝</span> Assignments</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item" onclick="logout()"><span class="nav-icon">🚪</span> Logout</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ──────────────────────────────────────────── -->
+  <div class="main-content">
+    <header class="top-bar">
+      <div style="display:flex; align-items:center; gap:15px;">
+        <a href="index.html" onclick="logout();" style="text-decoration:none; transform:scale(1.2);">🏠</a>
+        <h1 id="pageTitle">My Dashboard</h1>
+      </div>
+      <div class="top-bar-right">
+        <div>
+          <div class="user-name" id="tbStudentName">—</div>
+          <div class="user-role">Student · <span id="tbClass">—</span></div>
+        </div>
+        <div class="avatar" id="tbAvatar">S</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- OVERVIEW -->
+      <div class="page-section active" id="sec-overview">
+        <div style="margin-bottom:28px">
+          <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:4px">Welcome back, <span id="welcomeName" style="color:var(--primary)">—</span>! 👋</h2>
+          <p style="color:var(--text-muted);font-size:.9rem">Here's your academic summary at a glance.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card" style="cursor:pointer" onclick="showSection('marks',null)">
+            <div class="stat-icon-wrap blue">📊</div>
+            <div><div class="stat-val" id="stMarksCount">—</div><div class="stat-lbl">Marks Entries</div></div>
+          </div>
+          <div class="stat-card" style="cursor:pointer" onclick="showSection('attendance',null)">
+            <div class="stat-icon-wrap green">📅</div>
+            <div><div class="stat-val" id="stAttPct">—</div><div class="stat-lbl">Attendance %</div></div>
+          </div>
+          <div class="stat-card" style="cursor:pointer" onclick="showSection('notices',null)">
+            <div class="stat-icon-wrap orange">📢</div>
+            <div><div class="stat-val" id="stNoticeCount">—</div><div class="stat-lbl">Notices</div></div>
+          </div>
+          <div class="stat-card" style="cursor:pointer" onclick="showSection('assignments',null)">
+            <div class="stat-icon-wrap purple">📝</div>
+            <div><div class="stat-val" id="stAsCount">—</div><div class="stat-lbl">Assignments</div></div>
+          </div>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card" onclick="showSection('marks',null)"><div class="mc-icon">📊</div><div class="mc-title">My Marks</div><div class="mc-sub">View scores & results</div></div>
+          <div class="module-card" onclick="showSection('attendance',null)"><div class="mc-icon">📅</div><div class="mc-title">Attendance</div><div class="mc-sub">Your attendance record</div></div>
+          <div class="module-card" onclick="showSection('notices',null)"><div class="mc-icon">📢</div><div class="mc-title">Notices</div><div class="mc-sub">School announcements</div></div>
+          <div class="module-card" onclick="showSection('assignments',null)"><div class="mc-icon">📝</div><div class="mc-title">Assignments</div><div class="mc-sub">Pending tasks & submissions</div></div>
+        </div>
+      </div>
+
+      <!-- MARKS -->
+      <div class="page-section" id="sec-marks">
+        <div class="panel">
+          <div class="panel-head"><h2>📊 My Marks</h2><button class="btn btn-ghost btn-sm" onclick="loadMarks()">🔄</button></div>
+          <div class="panel-body">
+            <div class="marks-grid" id="marksGrid">
+              <div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>
+            </div>
+            <div class="empty-state" id="marksEmpty" style="display:none"><div class="es-icon">📊</div><p>No marks recorded yet.</p></div>
+          </div>
+        </div>
+        <!-- Marks table -->
+        <div class="panel">
+          <div class="panel-head"><h2>📋 All Entries</h2></div>
+          <div class="panel-body-0"><div class="tbl-wrap">
+            <table><thead><tr><th>Subject</th><th>Exam Type</th><th>Marks</th><th>Total</th><th>%</th></tr></thead>
+            <tbody id="marksTbody"></tbody></table>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="page-section" id="sec-attendance">
+        <!-- Summary Ring -->
+        <div class="att-summary" id="attSummaryCard">
+          <div class="att-ring">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+              <circle id="attRingCircle" cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="10"
+                stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" style="transition:stroke-dashoffset 1s ease"/>
+            </svg>
+            <div class="att-ring-label"><span id="attPctLabel">0</span><small>%</small></div>
+          </div>
+          <div>
+            <div style="font-size:1rem;font-weight:700;margin-bottom:12px">Attendance Overview</div>
+            <div class="att-stats">
+              <div class="att-stat-item"><div class="att-stat-val" style="color:var(--success)" id="attPresent">0</div><div class="att-stat-lbl">Present</div></div>
+              <div class="att-stat-item"><div class="att-stat-val" style="color:var(--danger)"  id="attAbsent" >0</div><div class="att-stat-lbl">Absent</div></div>
+              <div class="att-stat-item"><div class="att-stat-val" style="color:var(--warning)" id="attLate"   >0</div><div class="att-stat-lbl">Late</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Attendance Records -->
+        <div class="panel">
+          <div class="panel-head"><h2>📅 Attendance Records</h2><button class="btn btn-ghost btn-sm" onclick="loadAttendance()">🔄</button></div>
+          <div class="panel-body-0"><div class="tbl-wrap">
+            <table><thead><tr><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="attTbody"></tbody></table>
+            <div class="spinner-wrap" id="attLoading"><div class="spinner"></div></div>
+            <div class="empty-state" id="attEmpty" style="display:none"><div class="es-icon">📅</div><p>No attendance recorded yet.</p></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- NOTICES -->
+      <div class="page-section" id="sec-notices">
+        <div class="panel-head" style="margin-bottom:16px;padding:0">
+          <h2 class="section-title">📢 School Notices</h2>
+        </div>
+        <div class="notice-list-public" id="noticeList">
+          <div class="spinner-wrap"><div class="spinner"></div></div>
+        </div>
+        <div class="empty-state" id="noticeEmpty" style="display:none"><div class="es-icon">📢</div><p>No notices at the moment.</p></div>
+      </div>
+
+      <!-- ASSIGNMENTS -->
+      <div class="page-section" id="sec-assignments">
+        <div class="panel-head" style="margin-bottom:16px;padding:0">
+          <h2 class="section-title">📝 My Assignments</h2>
+        </div>
+        <div id="assignmentList">
+          <div class="spinner-wrap"><div class="spinner"></div></div>
+        </div>
+        <div class="empty-state" id="assignmentEmpty" style="display:none"><div class="es-icon">📝</div><p>No assignments posted for your class yet.</p></div>
+      </div>
+
+    </div><!-- page-content -->
+  </div><!-- main-content -->
+</div><!-- erp-layout -->
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+const API   = '/api';
+const STID  = localStorage.getItem('student_id');
+const SNAME = localStorage.getItem('student_name');
+const SCLS  = localStorage.getItem('student_class');
+const SCHID = localStorage.getItem('school_id');
+
+if (!STID) { location.href = 'student-login.html'; }
+
+// ── Brand ─────────────────────────────────────────────────
+document.getElementById('sbStudentName').textContent = SNAME || 'Student';
+document.getElementById('tbStudentName').textContent = SNAME || '—';
+document.getElementById('tbClass').textContent       = SCLS  || '—';
+document.getElementById('tbAvatar').textContent      = (SNAME||'S')[0].toUpperCase();
+document.getElementById('welcomeName').textContent   = SNAME || 'Student';
+document.title = `${SNAME || 'Dashboard'} – SchoolERP`;
+
+function logout() {
+  ['student_id','student_name','student_class','school_id'].forEach(k=>localStorage.removeItem(k));
+  location.href = 'student-login.html';
+}
+
+function toast(msg, type='success') {
+  const wrap=document.getElementById('toastWrap');
+  const el=document.createElement('div'); el.className=`toast toast-${type}`;
+  el.innerHTML=`<span>${type==='success'?'✅':type==='error'?'❌':'ℹ️'}</span>${msg}`;
+  wrap.appendChild(el); setTimeout(()=>el.remove(),3500);
+}
+
+function fmtDate(iso){ return iso?new Date(iso).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Navigation ─────────────────────────────────────────────
+function showSection(name, btn) {
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const titles={overview:'My Dashboard',marks:'My Marks',attendance:'My Attendance',notices:'Notices',assignments:'Assignments'};
+  document.getElementById('pageTitle').textContent = titles[name]||name;
+  if (name==='marks')       loadMarks();
+  if (name==='attendance')  loadAttendance();
+  if (name==='notices')     loadNotices();
+  if (name==='assignments') loadAssignments();
+}
+
+// ── Marks ─────────────────────────────────────────────────
+async function loadMarks() {
+  document.getElementById('marksGrid').innerHTML='<div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>';
+  document.getElementById('marksTbody').innerHTML='';
+  document.getElementById('marksEmpty').style.display='none';
+  try {
+    const r=await fetch(`${API}/marks/${STID}?school_id=${SCHID}`);const d=await r.json();
+    if (!d.success||!d.marks.length) { document.getElementById('marksGrid').innerHTML=''; document.getElementById('marksEmpty').style.display='block'; document.getElementById('stMarksCount').textContent=0; return; }
+    document.getElementById('stMarksCount').textContent = d.marks.length;
+    // Cards
+    document.getElementById('marksGrid').innerHTML = d.marks.map(m=>{
+      const pct=Math.round((m.marks/m.total)*100);
+      const cls=pct>=75?'high':pct>=50?'mid':'low';
+      return `<div class="mark-card">
+        <div class="mark-subject">${esc(m.subject)}</div>
+        <div class="mark-score ${cls}">${m.marks}</div>
+        <div class="mark-total">out of ${m.total}</div>
+        <div class="mark-type">${esc(m.exam_type)}</div>
+      </div>`;
+    }).join('');
+    // Table
+    document.getElementById('marksTbody').innerHTML = d.marks.map(m=>{
+      const pct=Math.round((m.marks/m.total)*100);
+      const color=pct>=75?'var(--success)':pct>=50?'var(--warning)':'var(--danger)';
+      return `<tr>
+        <td><strong>${esc(m.subject)}</strong></td>
+        <td>${esc(m.exam_type)}</td>
+        <td>${m.marks}</td><td>${m.total}</td>
+        <td><strong style="color:${color}">${pct}%</strong></td>
+      </tr>`;
+    }).join('');
+  }catch{toast('Cannot load marks.','error');}
+}
+
+// ── Attendance ─────────────────────────────────────────────
+async function loadAttendance() {
+  document.getElementById('attLoading').style.display='block';
+  document.getElementById('attEmpty').style.display='none';
+  document.getElementById('attTbody').innerHTML='';
+  try {
+    const r=await fetch(`${API}/attendance/${STID}?school_id=${SCHID}`);const d=await r.json();
+    document.getElementById('attLoading').style.display='none';
+    if (!d.success) { toast(d.message,'error'); return; }
+    const s=d.summary;
+    document.getElementById('attPresent').textContent = s.present;
+    document.getElementById('attAbsent').textContent  = s.absent;
+    document.getElementById('attLate').textContent    = s.late;
+    document.getElementById('attPctLabel').textContent = s.percentage;
+    document.getElementById('stAttPct').textContent    = s.percentage + '%';
+    // Animate ring
+    const circumference = 251.2;
+    const offset = circumference - (s.percentage / 100) * circumference;
+    document.getElementById('attRingCircle').style.strokeDashoffset = offset;
+    const ringColor = s.percentage>=75?'#22c55e':s.percentage>=50?'#f59e0b':'#ef4444';
+    document.getElementById('attRingCircle').style.stroke = ringColor;
+
+    if (!d.attendance.length) { document.getElementById('attEmpty').style.display='block'; return; }
+    document.getElementById('attTbody').innerHTML = d.attendance.map(a=>`
+      <tr>
+        <td>${a.date}</td>
+        <td><span class="badge-pill badge-${a.status.toLowerCase()}">${a.status}</span></td>
+      </tr>`).join('');
+  }catch{toast('Cannot load attendance.','error');document.getElementById('attLoading').style.display='none';}
+}
+
+// ── Notices ────────────────────────────────────────────────
+async function loadNotices() {
+  document.getElementById('noticeList').innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
+  document.getElementById('noticeEmpty').style.display='none';
+  try {
+    const r=await fetch(`${API}/notices/${SCHID}`);const d=await r.json();
+    if (!d.success||!d.notices.length) { document.getElementById('noticeList').innerHTML=''; document.getElementById('noticeEmpty').style.display='block'; document.getElementById('stNoticeCount').textContent=0; return; }
+    document.getElementById('stNoticeCount').textContent = d.notices.length;
+    document.getElementById('noticeList').innerHTML = d.notices.map(n=>`
+      <div class="notice-item ${n.priority.toLowerCase()}">
+        <div class="ni-title">${esc(n.title)}</div>
+        <div class="ni-content">${esc(n.content)}</div>
+        <div class="ni-meta">📅 ${fmtDate(n.createdAt)} &nbsp;·&nbsp; <span style="color:${n.priority==='Urgent'?'var(--danger)':n.priority==='Important'?'var(--warning)':'var(--primary)'}">${n.priority}</span></div>
+      </div>`).join('');
+  }catch{toast('Cannot load notices.','error');}
+}
+
+// ── Assignments ────────────────────────────────────────────
+async function loadAssignments() {
+  document.getElementById('assignmentList').innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
+  document.getElementById('assignmentEmpty').style.display='none';
+  if(!SCLS){document.getElementById('assignmentEmpty').style.display='block';document.getElementById('assignmentList').innerHTML='';return;}
+  try {
+    const cls=encodeURIComponent(SCLS);
+    const r=await fetch(`${API}/assignments/${cls}/${SCHID}`);const d=await r.json();
+    if (!d.success||!d.assignments.length) { document.getElementById('assignmentList').innerHTML=''; document.getElementById('assignmentEmpty').style.display='block'; document.getElementById('stAsCount').textContent=0; return; }
+    document.getElementById('stAsCount').textContent = d.assignments.length;
+    document.getElementById('assignmentList').innerHTML = d.assignments.map(a=>`
+      <div class="assignment-card">
+        <div class="as-icon">📝</div>
+        <div style="flex:1">
+          <div class="as-title">${esc(a.title)}</div>
+          <div class="as-desc">${esc(a.description)}</div>
+          <div class="as-meta">
+            <span>📚 ${esc(a.subject)}</span>
+            <span>🏫 ${esc(a.class)}</span>
+            <span>⏰ Due: ${fmtDate(a.due_date)}</span>
+          </div>
+        </div>
+      </div>`).join('');
+  }catch{toast('Cannot load assignments.','error');}
+}
+
+// ── Init ───────────────────────────────────────────────────
+loadMarks();
+loadAttendance();
+loadNotices();
+loadAssignments();
+</script>
+</body>
+</html>

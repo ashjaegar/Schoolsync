@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Dashboard – SchoolERP</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="erp-layout">
+
+  <!-- ── Sidebar ───────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo"><span>🏫</span><strong>SchoolERP</strong></div>
+      <div class="brand-school" id="sbSchoolName">Loading…</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <button class="nav-item active" onclick="showSection('overview',this)"><span class="nav-icon">🏠</span> Dashboard</button>
+
+      <div class="nav-section-label">Students</div>
+      <button class="nav-item" onclick="showSection('addStudent',this)"><span class="nav-icon">➕</span> Add Student</button>
+      <button class="nav-item" onclick="showSection('viewStudents',this)"><span class="nav-icon">👥</span> View Students</button>
+
+      <div class="nav-section-label">Academics</div>
+      <button class="nav-item" onclick="showSection('addMarks',this)"><span class="nav-icon">📊</span> Add Marks</button>
+      <button class="nav-item" onclick="showSection('viewMarks',this)"><span class="nav-icon">📈</span> View Marks</button>
+      <button class="nav-item" onclick="showSection('addAttendance',this)"><span class="nav-icon">📅</span> Add Attendance</button>
+
+      <div class="nav-section-label">Communication</div>
+      <button class="nav-item" onclick="showSection('addNotice',this)"><span class="nav-icon">📢</span> Post Notice</button>
+      <button class="nav-item" onclick="showSection('addAssignment',this)"><span class="nav-icon">📝</span> Assignments</button>
+
+      <div class="nav-section-label">Staff Management</div>
+      <button class="nav-item" onclick="showSection('addTeacher',this)"><span class="nav-icon">🧑‍🏫</span> Add Teacher</button>
+      <button class="nav-item" onclick="showSection('viewTeachers',this)"><span class="nav-icon">👨‍🏫</span> View Teachers</button>
+      <button class="nav-item" onclick="showSection('addParent',this)"><span class="nav-icon">👨‍👩‍👧</span> Add Parent</button>
+      <button class="nav-item" onclick="showSection('addStaff',this)"><span class="nav-icon">🧑‍💼</span> Add Staff</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item" onclick="logout()"><span class="nav-icon">🚪</span> Logout</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ──────────────────────────────────────────── -->
+  <div class="main-content">
+    <header class="top-bar">
+      <div style="display:flex; align-items:center; gap:15px;">
+        <a href="index.html" onclick="logout();" style="text-decoration:none; transform:scale(1.2);">🏠</a>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="top-bar-right">
+        <div>
+          <div class="user-name" id="tbSchoolName">—</div>
+          <div class="user-role">School Administrator</div>
+        </div>
+        <div class="avatar" id="tbAvatar">S</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- OVERVIEW -->
+      <div class="page-section active" id="sec-overview">
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card"><div class="stat-icon-wrap blue">👥</div><div><div class="stat-val" id="stStudents">—</div><div class="stat-lbl">Students</div></div></div>
+          <div class="stat-card"><div class="stat-icon-wrap green">📊</div><div><div class="stat-val" id="stMarks">—</div><div class="stat-lbl">Marks Entries</div></div></div>
+          <div class="stat-card"><div class="stat-icon-wrap orange">📢</div><div><div class="stat-val" id="stNotices">—</div><div class="stat-lbl">Notices</div></div></div>
+          <div class="stat-card"><div class="stat-icon-wrap purple">📝</div><div><div class="stat-val" id="stAssignments">—</div><div class="stat-lbl">Assignments</div></div></div>
+        </div>
+        <h3 style="margin-bottom:16px;font-size:.9rem;color:var(--text-muted)">Quick Actions</h3>
+        <div class="modules-grid">
+          <div class="module-card" onclick="showSection('addStudent',null)"><div class="mc-icon">➕</div><div class="mc-title">Add Student</div><div class="mc-sub">Enroll a new student</div></div>
+          <div class="module-card" onclick="showSection('viewStudents',null)"><div class="mc-icon">👥</div><div class="mc-title">View Students</div><div class="mc-sub">Manage enrolled students</div></div>
+          <div class="module-card" onclick="showSection('addMarks',null)"><div class="mc-icon">📊</div><div class="mc-title">Add Marks</div><div class="mc-sub">Enter exam scores</div></div>
+          <div class="module-card" onclick="showSection('addAttendance',null)"><div class="mc-icon">📅</div><div class="mc-title">Attendance</div><div class="mc-sub">Mark daily attendance</div></div>
+          <div class="module-card" onclick="showSection('addNotice',null)"><div class="mc-icon">📢</div><div class="mc-title">Post Notice</div><div class="mc-sub">Publish announcements</div></div>
+          <div class="module-card" onclick="showSection('addAssignment',null)"><div class="mc-icon">📝</div><div class="mc-title">Assignments</div><div class="mc-sub">Create class tasks</div></div>
+          <div class="module-card" onclick="showSection('addTeacher',null)"><div class="mc-icon">🧑‍🏫</div><div class="mc-title">Add Teacher</div><div class="mc-sub">Register a teacher</div></div>
+          <div class="module-card" onclick="showSection('viewTeachers',null)"><div class="mc-icon">👨‍🏫</div><div class="mc-title">View Teachers</div><div class="mc-sub">Manage active teachers</div></div>
+          <div class="module-card" onclick="showSection('addParent',null)"><div class="mc-icon">👨‍👩‍👧</div><div class="mc-title">Add Parent</div><div class="mc-sub">Link parent to student</div></div>
+          <div class="module-card" onclick="showSection('addStaff',null)"><div class="mc-icon">🧑‍💼</div><div class="mc-title">Add Staff</div><div class="mc-sub">Register staff member</div></div>
+        </div>
+      </div>
+
+      <!-- ADD STUDENT -->
+      <div class="page-section" id="sec-addStudent">
+        <div class="panel">
+          <div class="panel-head"><h2>➕ Add New Student</h2></div>
+          <div class="panel-body">
+            <form id="addStudentForm">
+              <div class="input-row">
+                <div class="form-group"><label>Full Name</label><input id="sName" placeholder="e.g. Riya Sharma" required/></div>
+                <div class="form-group"><label>Class / Grade</label><input id="sClass" placeholder="e.g. Class 10-B" required/></div>
+              </div>
+              <div class="input-row">
+                <div class="form-group" style="width:100%"><label>Admission Number (Login ID)</label><input id="sLoginId" placeholder="e.g. ADM2024001" required/>
+                  <small style="color:#64748b;font-size:0.75rem;margin-top:4px;display:block;">*Password will be automatically set to <strong>123456</strong></small>
+                </div>
+              </div>
+              <div class="alert alert-error"   id="asErr"></div>
+              <div class="alert alert-success" id="asOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px" id="asBtn">Add Student</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-head"><h2>📂 Bulk Add Students (Excel/CSV)</h2></div>
+          <div class="panel-body">
+            <p style="font-size:0.9rem; color:#64748b; margin-bottom:15px;">Upload a spreadsheet containing <strong>Name</strong>, <strong>Class</strong>, and <strong>Admission Number</strong> columns. Passwords will be automatically assigned to all students.</p>
+            <form id="bulkStudentForm">
+              <div class="form-group">
+                <input type="file" id="bulkFile" accept=".xlsx, .xls, .csv" required style="padding:10px; border:1px dashed #cbd5e1; width:100%; border-radius:6px;" />
+              </div>
+              <div class="alert alert-error" id="bsErr"></div>
+              <div class="alert alert-success" id="bsOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px" id="bsBtn">Upload & Enroll</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW STUDENTS -->
+      <div class="page-section" id="sec-viewStudents">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>👥 Enrolled Students</h2>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <select id="sClassFilter" style="padding:6px;border-radius:4px;border:1px solid #ccc;" onchange="renderStudents()"><option value="">All Classes</option></select>
+              <button class="btn btn-ghost btn-sm" onclick="loadStudents()">🔄 Refresh</button>
+            </div>
+          </div>
+          <div class="panel-body-0">
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>#</th><th>Name</th><th>Class</th><th>Admission No.</th><th>Enrolled</th><th>Action</th></tr></thead>
+                <tbody id="studentsTbody"></tbody>
+              </table>
+              <div class="empty-state" id="studentsEmpty" style="display:none"><div class="es-icon">📋</div><p>No students yet. Add one first!</p></div>
+              <div class="spinner-wrap" id="studentsLoading"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD MARKS -->
+      <div class="page-section" id="sec-addMarks">
+        <!-- Step 1: Class Selection -->
+        <div id="mStep1">
+          <div class="panel">
+            <div class="panel-head"><h2>📊 Select Class to Add Marks</h2></div>
+            <div class="panel-body">
+              <div class="modules-grid" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
+                <button class="module-card" onclick="startMarksEntry('Class 1')"><div class="mc-icon">1️⃣</div><div class="mc-title">Class 1</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 2')"><div class="mc-icon">2️⃣</div><div class="mc-title">Class 2</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 3')"><div class="mc-icon">3️⃣</div><div class="mc-title">Class 3</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 4')"><div class="mc-icon">4️⃣</div><div class="mc-title">Class 4</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 5')"><div class="mc-icon">5️⃣</div><div class="mc-title">Class 5</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 6')"><div class="mc-icon">6️⃣</div><div class="mc-title">Class 6</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 7')"><div class="mc-icon">7️⃣</div><div class="mc-title">Class 7</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 8')"><div class="mc-icon">8️⃣</div><div class="mc-title">Class 8</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 9')"><div class="mc-icon">9️⃣</div><div class="mc-title">Class 9</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 10')"><div class="mc-icon">🔟</div><div class="mc-title">Class 10</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 11')"><div class="mc-icon">🏛️</div><div class="mc-title">Class 11</div></button>
+                <button class="module-card" onclick="startMarksEntry('Class 12')"><div class="mc-icon">🎓</div><div class="mc-title">Class 12</div></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Entry Form -->
+        <div id="mStep2" style="display:none">
+          <div class="panel">
+            <div class="panel-head" style="display:flex; justify-content:space-between; align-items:center;">
+              <h2 id="mSelectedClassTitle">📊 Add Marks</h2>
+              <button class="btn btn-ghost btn-sm" onclick="backToClassSelect()">⬅️ Back</button>
+            </div>
+            <div class="panel-body">
+              <form id="addMarksForm">
+                <input type="hidden" id="mClass" />
+                <div class="input-row">
+                  <div class="form-group"><label>Subject</label><input id="mSubject" placeholder="e.g. Mathematics" required/></div>
+                  <div class="form-group"><label>Exam Type</label>
+                    <select id="mExamType">
+                      <option>Unit Test</option><option>Half Yearly</option><option>Annual</option><option>Practice</option>
+                    </select>
+                  </div>
+                  <div class="form-group"><label>Total Marks</label><input type="number" id="mTotal" value="100" min="1"/></div>
+                </div>
+                
+                <div id="mStudentsArea" style="margin-top:20px;">
+                  <div class="tbl-wrap">
+                    <table>
+                      <thead><tr><th>Name</th><th>Admission No.</th><th style="width:120px;">Marks Obtained</th></tr></thead>
+                      <tbody id="mStudentsTbody"></tbody>
+                    </table>
+                  </div>
+                  <div class="alert alert-error"   id="amErr" style="margin-top:10px"></div>
+                  <div class="alert alert-success" id="amOk" style="margin-top:10px"></div>
+                  <button type="submit" class="btn btn-primary" style="width:auto;margin-top:15px" id="amBtn">Save All Marks</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW MARKS -->
+      <div class="page-section" id="sec-viewMarks">
+        <!-- Step 1: Class Selection -->
+        <div id="vmStep1">
+          <div class="panel">
+            <div class="panel-head"><h2>📊 Select Class to View Marks</h2></div>
+            <div class="panel-body">
+              <div class="modules-grid" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
+                <button class="module-card" onclick="startViewMarks('Class 1')"><div class="mc-icon">1️⃣</div><div class="mc-title">Class 1</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 2')"><div class="mc-icon">2️⃣</div><div class="mc-title">Class 2</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 3')"><div class="mc-icon">3️⃣</div><div class="mc-title">Class 3</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 4')"><div class="mc-icon">4️⃣</div><div class="mc-title">Class 4</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 5')"><div class="mc-icon">5️⃣</div><div class="mc-title">Class 5</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 6')"><div class="mc-icon">6️⃣</div><div class="mc-title">Class 6</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 7')"><div class="mc-icon">7️⃣</div><div class="mc-title">Class 7</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 8')"><div class="mc-icon">8️⃣</div><div class="mc-title">Class 8</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 9')"><div class="mc-icon">9️⃣</div><div class="mc-title">Class 9</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 10')"><div class="mc-icon">🔟</div><div class="mc-title">Class 10</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 11')"><div class="mc-icon">🏛️</div><div class="mc-title">Class 11</div></button>
+                <button class="module-card" onclick="startViewMarks('Class 12')"><div class="mc-icon">🎓</div><div class="mc-title">Class 12</div></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Table View -->
+        <div id="vmStep2" style="display:none">
+          <div class="panel">
+            <div class="panel-head" style="display:flex; justify-content:space-between; align-items:center;">
+              <h2 id="vmSelectedClassTitle">📊 School Marks</h2>
+              <div style="display:flex; gap:10px;">
+                <button class="btn btn-ghost btn-sm" onclick="loadSchoolMarks()">🔄 Refresh</button>
+                <button class="btn btn-ghost btn-sm" onclick="backToViewMarksSelect()">⬅️ Back</button>
+              </div>
+            </div>
+            <div class="panel-body-0">
+              <input type="hidden" id="mViewClassFilter" />
+              <div class="tbl-wrap">
+                <table>
+                  <thead><tr><th>Student Name</th><th>Class</th><th>Admission No.</th><th>Subject</th><th>Exam Type</th><th>Marks</th><th>Total</th><th>Action</th></tr></thead>
+                  <tbody id="viewMarksTbody"></tbody>
+                </table>
+                <div class="empty-state" id="viewMarksEmpty" style="display:none"><div class="es-icon">📋</div><p>No marks found.</p></div>
+                <div class="spinner-wrap" id="viewMarksLoading" style="display:none"><div class="spinner"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD ATTENDANCE -->
+      <div class="page-section" id="sec-addAttendance">
+        <div class="panel">
+          <div class="panel-head"><h2>📅 Mark Attendance</h2></div>
+          <div class="panel-body">
+            <form id="addAttForm">
+              <div class="form-group"><label>Select Student</label>
+                <select id="attStudent"><option value="">-- Select Student --</option></select>
+              </div>
+              <div class="input-row">
+                <div class="form-group"><label>Date</label><input type="date" id="attDate"/></div>
+                <div class="form-group"><label>Status</label>
+                  <select id="attStatus"><option>Present</option><option>Absent</option><option>Late</option></select>
+                </div>
+              </div>
+              <div class="alert alert-error"   id="aaErr"></div>
+              <div class="alert alert-success" id="aaOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px" id="aaBtn">Mark Attendance</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD NOTICE -->
+      <div class="page-section" id="sec-addNotice">
+        <div class="panel">
+          <div class="panel-head"><h2>📢 Post Notice</h2></div>
+          <div class="panel-body">
+            <form id="addNoticeForm">
+              <div class="input-row">
+                <div class="form-group"><label>Title</label><input id="nTitle" placeholder="Notice title"/></div>
+                <div class="form-group"><label>Priority</label>
+                  <select id="nPriority"><option>Normal</option><option>Important</option><option>Urgent</option></select>
+                </div>
+              </div>
+              <div class="form-group"><label>Content</label><textarea id="nContent" rows="4" placeholder="Notice content…"></textarea></div>
+              <div class="form-group"><label>Attachment (Optional)</label><input type="file" id="nFile" accept="image/*,application/pdf" style="padding:8px; border:1px dashed #cbd5e1; width:100%; border-radius:6px;"/></div>
+              <div class="alert alert-error"   id="anErr"></div>
+              <div class="alert alert-success" id="anOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px" id="anBtn">Publish Notice</button>
+            </form>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>📋 Recent Notices</h2><button class="btn btn-ghost btn-sm" onclick="loadNotices()">🔄 Refresh</button></div>
+          <div class="panel-body-0"><div class="tbl-wrap">
+            <table><thead><tr><th>Title</th><th>Priority</th><th>Date</th><th>Attachment</th><th>Action</th></tr></thead>
+            <tbody id="noticesTbody"></tbody></table>
+            <div class="spinner-wrap" id="noticesLoading"><div class="spinner"></div></div>
+            <div class="empty-state" id="noticesEmpty" style="display:none"><div class="es-icon">📢</div><p>No notices posted yet.</p></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- ADD ASSIGNMENT -->
+      <div class="page-section" id="sec-addAssignment">
+        <div class="panel">
+          <div class="panel-head"><h2>📝 Create Assignment</h2></div>
+          <div class="panel-body">
+            <form id="addAsForm">
+              <div class="input-row">
+                <div class="form-group"><label>Title</label><input id="asTitle" placeholder="Assignment title"/></div>
+                <div class="form-group"><label>Class</label><input id="asClass" placeholder="e.g. Class 10-B"/></div>
+              </div>
+              <div class="input-row">
+                <div class="form-group"><label>Subject</label><input id="asSubject" placeholder="e.g. Science"/></div>
+                <div class="form-group"><label>Due Date</label><input type="date" id="asDueDate"/></div>
+              </div>
+              <div class="form-group"><label>Description</label><textarea id="asDesc" rows="3" placeholder="Assignment details…"></textarea></div>
+              <div class="alert alert-error"   id="assErr"></div>
+              <div class="alert alert-success" id="assOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px" id="assBtn">Post Assignment</button>
+            </form>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>📋 Posted Assignments</h2><button class="btn btn-ghost btn-sm" onclick="loadAssignments()">🔄 Refresh</button></div>
+          <div class="panel-body-0"><div class="tbl-wrap">
+            <table><thead><tr><th>Title</th><th>Class</th><th>Subject</th><th>Due Date</th><th>Action</th></tr></thead>
+            <tbody id="assignmentsTbody"></tbody></table>
+            <div class="spinner-wrap" id="assignmentsLoading"><div class="spinner"></div></div>
+            <div class="empty-state" id="assignmentsEmpty" style="display:none"><div class="es-icon">📝</div><p>No assignments yet.</p></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- ADD TEACHER -->
+      <div class="page-section" id="sec-addTeacher">
+        <div class="panel">
+          <div class="panel-head"><h2>🧑‍🏫 Add Teacher</h2></div>
+          <div class="panel-body">
+            <form id="addTeacherForm">
+              <div class="input-row">
+                <div class="form-group"><label>Full Name</label><input id="tName" placeholder="e.g. Mr. Arjun Mehta" required/></div>
+                <div class="form-group"><label>Subject</label><input id="tSubject" placeholder="e.g. Mathematics" required/></div>
+              </div>
+              <div class="input-row">
+                <div class="form-group"><label>Teacher Login ID</label><input id="tLoginId" placeholder="e.g. TCH2024001" required/></div>
+                <div class="form-group"><label>Initial Password</label><input id="tPassword" placeholder="Set a password" required/></div>
+              </div>
+              <div class="alert alert-error"   id="atErr"></div>
+              <div class="alert alert-success" id="atOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px;background:linear-gradient(135deg,#16a34a,#15803d)" id="atBtn">Add Teacher</button>
+            </form>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-head"><h2>📂 Bulk Add Teachers (Excel/CSV)</h2></div>
+          <div class="panel-body">
+            <form id="bulkTeacherForm">
+              <div class="form-group"><input type="file" id="bulkTeacherFile" accept=".xlsx, .xls, .csv" required style="padding:10px; border:1px dashed #cbd5e1; width:100%; border-radius:6px;" /></div>
+              <div class="alert alert-error" id="btErr"></div><div class="alert alert-success" id="btOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px;background:linear-gradient(135deg,#16a34a,#15803d)" id="btBtn">Upload & Enroll</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW TEACHERS -->
+      <div class="page-section" id="sec-viewTeachers">
+        <div class="panel">
+          <div class="panel-head"><h2>👨‍🏫 Teachers</h2><button class="btn btn-ghost btn-sm" onclick="loadTeachers()">🔄</button></div>
+          <div class="panel-body-0"><div class="tbl-wrap">
+            <table><thead><tr><th>#</th><th>Name</th><th>Subject</th><th>Login ID</th><th>Action</th></tr></thead>
+            <tbody id="teachersTbody"></tbody></table>
+            <div class="spinner-wrap" id="teachersLoading"><div class="spinner"></div></div>
+            <div class="empty-state" id="teachersEmpty" style="display:none"><div class="es-icon">🧑‍🏫</div><p>No teachers added yet.</p></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- ADD PARENT -->
+      <div class="page-section" id="sec-addParent">
+        <div class="panel">
+          <div class="panel-head"><h2>👨‍👩‍👧 Add Parent</h2></div>
+          <div class="panel-body">
+            <form id="addParentForm">
+              <div class="input-row">
+                <div class="form-group"><label>Parent Name</label><input id="pName" placeholder="e.g. Mrs. Priya Sharma" required/></div>
+                <div class="form-group"><label>Link to Student</label><select id="pStudent"><option value="">-- Select Student --</option></select></div>
+              </div>
+              <div class="input-row">
+                <div class="form-group" style="width:100%"><label>Parent Login ID</label><input id="pLoginId" placeholder="e.g. PAR2024001" required/>
+                  <small style="color:#64748b;font-size:0.75rem;margin-top:4px;display:block;">*Password will be automatically set to <strong>123456</strong></small>
+                </div>
+              </div>
+              <div class="alert alert-error"   id="apErr"></div>
+              <div class="alert alert-success" id="apOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px;background:linear-gradient(135deg,#f59e0b,#d97706)" id="apBtn">Add Parent</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD STAFF -->
+      <div class="page-section" id="sec-addStaff">
+        <div class="panel">
+          <div class="panel-head"><h2>🧑‍💼 Add Staff Member</h2></div>
+          <div class="panel-body">
+            <form id="addStaffForm">
+              <div class="input-row">
+                <div class="form-group"><label>Staff Name</label><input id="sfName" placeholder="e.g. Mr. Vijay Kumar" required/></div>
+                <div class="form-group"><label>Role / Department</label><input id="sfRole" placeholder="e.g. Librarian, Peon" required/></div>
+              </div>
+              <div class="input-row">
+                <div class="form-group" style="width:100%"><label>Staff Login ID</label><input id="sfLoginId" placeholder="e.g. STF2024001" required/>
+                  <small style="color:#64748b;font-size:0.75rem;margin-top:4px;display:block;">*Password will be automatically set to <strong>123456</strong></small>
+                </div>
+              </div>
+              <div class="alert alert-error"   id="asfErr"></div>
+              <div class="alert alert-success" id="asfOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px;background:linear-gradient(135deg,#7c3aed,#6d28d9)" id="asfBtn">Add Staff</button>
+            </form>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-head"><h2>📂 Bulk Add Staff (Excel/CSV)</h2></div>
+          <div class="panel-body">
+            <form id="bulkStaffForm">
+              <div class="form-group"><input type="file" id="bulkStaffFile" accept=".xlsx, .xls, .csv" required style="padding:10px; border:1px dashed #cbd5e1; width:100%; border-radius:6px;" /></div>
+              <div class="alert alert-error" id="bsfErr"></div><div class="alert alert-success" id="bsfOk"></div>
+              <button type="submit" class="btn btn-primary" style="width:auto;margin-top:8px;background:linear-gradient(135deg,#7c3aed,#6d28d9)" id="bsfBtn">Upload & Enroll</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- page-content -->
+  </div><!-- main-content -->
+</div><!-- erp-layout -->
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+const API   = '/api';
+const SID   = localStorage.getItem('school_id');
+const SNAME = localStorage.getItem('school_name');
+
+if (!SID || localStorage.getItem('role') !== 'admin') location.href = 'admin-login.html';
+
+// ── Brand ───────────────────────────────────────────────
+document.getElementById('sbSchoolName').textContent = SNAME || 'My School';
+document.getElementById('tbSchoolName').textContent = SNAME || '—';
+document.getElementById('tbAvatar').textContent     = (SNAME || 'S')[0].toUpperCase();
+
+// ── Navigation ───────────────────────────────────────────
+function showSection(name, btn) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const titles = {overview:'Dashboard',addStudent:'Add Student',viewStudents:'View Students',addMarks:'Add Marks',addAttendance:'Mark Attendance',addNotice:'Post Notice',addAssignment:'Create Assignment',addTeacher:'Add Teacher',viewTeachers:'Teachers',addParent:'Add Parent',addStaff:'Add Staff'};
+  document.getElementById('pageTitle').textContent = titles[name] || name;
+  if (name === 'viewStudents') loadStudents();
+  if (name === 'addMarks' || name === 'addAttendance') loadStudentDropdowns();
+  if (name === 'viewMarks')      loadSchoolMarks();
+  if (name === 'addNotice')      loadNotices();
+  if (name === 'addAssignment')  loadAssignments();
+  if (name === 'viewTeachers')   loadTeachers();
+  if (name === 'addParent')      loadStudentDropdowns();
+}
+
+function logout() {
+  ['school_id','school_name','role'].forEach(k=>localStorage.removeItem(k));
+  location.href = 'admin-login.html';
+}
+
+// ── Toast ─────────────────────────────────────────────────
+function toast(msg, type='success') {
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.innerHTML = `<span>${type==='success'?'✅':type==='error'?'❌':'ℹ️'}</span>${msg}`;
+  wrap.appendChild(el);
+  setTimeout(()=>el.remove(), 3500);
+}
+
+function fmtDate(iso) { return iso ? new Date(iso).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—'; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── Students ─────────────────────────────────────────────
+let studentsCache = [];
+
+async function loadStudents() {
+  document.getElementById('studentsLoading').style.display='block';
+  document.getElementById('studentsEmpty').style.display='none';
+  document.getElementById('studentsTbody').innerHTML='';
+  try {
+    const r = await fetch(`${API}/students/${SID}`);
+    const d = await r.json();
+    studentsCache = d.success ? d.students : [];
+    if (!d.success) { toast(d.message,'error'); return; }
+    document.getElementById('stStudents').textContent = d.students.length;
+    
+    const classes = [...new Set(studentsCache.map(s => s.class))].filter(Boolean).sort();
+    const cf = document.getElementById('sClassFilter');
+    const curVal = cf.value;
+    cf.innerHTML = '<option value="">All Classes</option>' + classes.map(c => `<option value="${c}">${esc(c)}</option>`).join('');
+    cf.value = curVal;
+
+    renderStudents();
+  } catch { toast('Cannot load students.','error'); document.getElementById('studentsLoading').style.display='none'; }
+}
+
+function renderStudents() {
+  document.getElementById('studentsLoading').style.display='none';
+  const filterCls = document.getElementById('sClassFilter').value;
+  const filtered = filterCls ? studentsCache.filter(s => s.class === filterCls) : studentsCache;
+  if (!filtered.length) { document.getElementById('studentsEmpty').style.display='block'; document.getElementById('studentsTbody').innerHTML=''; return; }
+  document.getElementById('studentsEmpty').style.display='none';
+  document.getElementById('studentsTbody').innerHTML = filtered.map((s,i)=>`
+    <tr id="sr-${s._id}">
+      <td style="color:var(--text-muted)">${i+1}</td>
+      <td><strong>${esc(s.name)}</strong></td>
+      <td>${esc(s.class)}</td>
+      <td style="font-family:monospace;color:var(--primary)">${esc(s.login_id)}</td>
+      <td style="color:var(--text-muted)">${fmtDate(s.createdAt)}</td>
+      <td><button class="btn btn-danger" onclick="deleteStudent('${s._id}','${esc(s.name)}')">Delete</button></td>
+    </tr>`).join('');
+}
+
+function loadStudentDropdowns() {
+  ['attStudent','pStudent'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) {
+      el.innerHTML = '<option value="">-- Select Student --</option>';
+      studentsCache.forEach(s => { el.innerHTML += `<option value="${s._id}">${esc(s.name)} (${esc(s.login_id)})</option>`; });
+    }
+  });
+  
+  const mClass = document.getElementById('mClass');
+  if (mClass) {
+    const classes = [...new Set(studentsCache.map(s => s.class))].filter(Boolean).sort();
+    mClass.innerHTML = '<option value="">-- Select Class --</option>' + classes.map(c => `<option value="${c}">${esc(c)}</option>`).join('');
+  }
+
+  if (!studentsCache.length) fetch(`${API}/students/${SID}`).then(r=>r.json()).then(d=>{ if(d.success){ studentsCache=d.students; loadStudentDropdowns(); } });
+}
+
+async function deleteStudent(id, name) {
+  if (!confirm(`Remove "${name}"?`)) return;
+  const r = await fetch(`${API}/student/${id}`, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({school_id:SID}) });
+  const d = await r.json();
+  if (d.success) { toast(`${name} removed.`); loadStudents(); }
+  else toast(d.message,'error');
+}
+
+document.getElementById('addStudentForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('asErr'), ok=document.getElementById('asOk');
+  err.className=ok.className='alert';
+  const name=document.getElementById('sName').value.trim(), cls=document.getElementById('sClass').value.trim();
+  const login_id=document.getElementById('sLoginId').value.trim();
+  if(!name||!cls||!login_id){err.textContent='All fields required.';err.className='alert alert-error show';return;}
+  const btn=document.getElementById('asBtn');btn.disabled=true;btn.textContent='Adding…';
+  try {
+    const r=await fetch(`${API}/add-student`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,class:cls,school_id:SID,login_id})});
+    const d=await r.json();
+    if(d.success){ok.textContent=`${name} added! Admission: ${login_id}`;ok.className='alert alert-success show';document.getElementById('addStudentForm').reset();studentsCache=[];toast(`✅ ${name} enrolled!`);}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Add Student';}
+});
+
+document.getElementById('bulkStudentForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('bsErr'), ok=document.getElementById('bsOk');
+  err.className=ok.className='alert';
+  const fileInput = document.getElementById('bulkFile');
+  if(!fileInput.files.length){err.textContent='Please select a file.';err.className='alert alert-error show';return;}
+
+  const formData = new FormData();
+  formData.append('file', fileInput.files[0]);
+  formData.append('school_id', SID);
+
+  const btn=document.getElementById('bsBtn');btn.disabled=true;btn.textContent='Uploading…';
+  try {
+    const r=await fetch(`${API}/bulk-add-students`, { method:'POST', body: formData });
+    const d=await r.json();
+    if(d.success){ok.textContent=d.message;ok.className='alert alert-success show';document.getElementById('bulkStudentForm').reset();studentsCache=[];loadStudents();toast(`✅ Bulk upload successful!`);}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Upload & Enroll';}
+});
+
+// ── Marks ─────────────────────────────────────────────────
+function startMarksEntry(cls) {
+  document.getElementById('mClass').value = cls;
+  document.getElementById('mSelectedClassTitle').textContent = `📊 Add Marks for ${cls}`;
+  document.getElementById('mStep1').style.display = 'none';
+  document.getElementById('mStep2').style.display = 'block';
+  fetchClassStudents();
+}
+
+function backToClassSelect() {
+  document.getElementById('mStep1').style.display = 'block';
+  document.getElementById('mStep2').style.display = 'none';
+  document.getElementById('mStudentsTbody').innerHTML = '';
+}
+
+async function fetchClassStudents() {
+  const cls = document.getElementById('mClass').value;
+  if (!cls) return;
+  const tbody = document.getElementById('mStudentsTbody');
+  tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;"><div class="spinner"></div></td></tr>';
+  
+  try {
+    const r = await fetch(`${API}/students/${SID}?class=${encodeURIComponent(cls)}`);
+    const d = await r.json();
+    const students = d.success ? d.students.filter(s => s.class === cls) : [];
+    
+    if (!students.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--text-muted)">No students found in this class.</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = students.map(s => `
+      <tr>
+        <td><strong>${esc(s.name)}</strong></td>
+        <td><span style="font-family:monospace;color:var(--text-muted)">${esc(s.login_id)}</span></td>
+        <td><input type="number" class="mMarksInput" data-id="${s._id}" min="0" placeholder="0" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:4px;"/></td>
+      </tr>
+    `).join('');
+  } catch {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:red">Failed to load students.</td></tr>';
+  }
+}
+
+document.getElementById('addMarksForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('amErr'),ok=document.getElementById('amOk');
+  err.className=ok.className='alert';
+  const cls=document.getElementById('mClass').value, subject=document.getElementById('mSubject').value.trim();
+  const total=document.getElementById('mTotal').value, exam_type=document.getElementById('mExamType').value;
+  if(!subject){err.textContent='Subject required.';err.className='alert alert-error show';return;}
+
+  const inputs = document.querySelectorAll('.mMarksInput');
+  const marks_data = [];
+  inputs.forEach(inp => {
+    if (inp.value.trim() !== '') {
+      marks_data.push({ student_id: inp.getAttribute('data-id'), marks: +inp.value });
+    }
+  });
+
+  if (!marks_data.length) { err.textContent='Enter marks for at least one student.';err.className='alert alert-error show';return; }
+
+  const btn=document.getElementById('amBtn');btn.disabled=true;btn.textContent='Saving All…';
+  try {
+    const r=await fetch(`${API}/bulk-add-marks`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({school_id:SID,subject,total:+total,exam_type,marks_data})});
+    const d=await r.json();
+    if(d.success){ok.textContent=d.message;ok.className='alert alert-success show';document.getElementById('addMarksForm').reset();toast('📊 Marks saved!');}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Save All Marks';}
+});
+
+function startViewMarks(cls) {
+  document.getElementById('mViewClassFilter').value = cls;
+  document.getElementById('vmSelectedClassTitle').textContent = `📊 School Marks for ${cls}`;
+  document.getElementById('vmStep1').style.display = 'none';
+  document.getElementById('vmStep2').style.display = 'block';
+  loadSchoolMarks();
+}
+
+function backToViewMarksSelect() {
+  document.getElementById('vmStep1').style.display = 'block';
+  document.getElementById('vmStep2').style.display = 'none';
+  document.getElementById('viewMarksTbody').innerHTML = '';
+}
+
+async function loadSchoolMarks() {
+  document.getElementById('viewMarksLoading').style.display='block';
+  document.getElementById('viewMarksEmpty').style.display='none';
+  document.getElementById('viewMarksTbody').innerHTML='';
+  try {
+    const r = await fetch(`${API}/marks/school/${SID}`);
+    const d = await r.json();
+    document.getElementById('viewMarksLoading').style.display='none';
+    schoolMarksCache = d.success ? d.marks : [];
+    if (!d.success) { toast(d.message,'error'); return; }
+    
+    const classes = [...new Set(schoolMarksCache.map(m => m.student_id ? m.student_id.class : null))].filter(Boolean).sort();
+    const cf = document.getElementById('mViewClassFilter');
+    const curVal = cf.value;
+    cf.innerHTML = '<option value="">All Classes</option>' + classes.map(c => `<option value="${c}">${esc(c)}</option>`).join('');
+    cf.value = curVal;
+
+    renderSchoolMarks();
+  } catch { 
+    toast('Cannot load marks.','error'); 
+    document.getElementById('viewMarksLoading').style.display='none'; 
+  }
+}
+
+function renderSchoolMarks() {
+  const filterCls = document.getElementById('mViewClassFilter').value;
+  const filtered = schoolMarksCache.filter(m => {
+    if (!m.student_id) return false;
+    if (filterCls && m.student_id.class !== filterCls) return false;
+    return true;
+  });
+
+  if (!filtered.length) { document.getElementById('viewMarksEmpty').style.display='block'; document.getElementById('viewMarksTbody').innerHTML=''; return; }
+  document.getElementById('viewMarksEmpty').style.display='none';
+  document.getElementById('viewMarksTbody').innerHTML = filtered.map(m=>`
+    <tr id="vmr-${m._id}">
+      <td><strong>${esc(m.student_id.name)}</strong></td>
+      <td>${esc(m.student_id.class)}</td>
+      <td style="font-family:monospace;color:var(--text-muted)">${esc(m.student_id.login_id)}</td>
+      <td>${esc(m.subject)}</td>
+      <td>${esc(m.exam_type)}</td>
+      <td><strong>${m.marks}</strong></td>
+      <td>${m.total}</td>
+      <td><button class="btn btn-danger" onclick="deleteMark('${m._id}')">Delete</button></td>
+    </tr>`).join('');
+}
+
+async function deleteMark(id) {
+  if (!confirm('Delete this mark entry?')) return;
+  try {
+    const r = await fetch(`${API}/marks/${id}`, { method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({school_id: SID})});
+    const d = await r.json();
+    if (d.success) { toast('Mark entry deleted.'); loadSchoolMarks(); }
+    else toast(d.message, 'error');
+  } catch { toast('Server error.', 'error'); }
+}
+
+// ── Attendance ────────────────────────────────────────────
+document.getElementById('attDate').value = new Date().toISOString().split('T')[0];
+
+document.getElementById('addAttForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('aaErr'),ok=document.getElementById('aaOk');
+  err.className=ok.className='alert';
+  const student_id=document.getElementById('attStudent').value, date=document.getElementById('attDate').value, status=document.getElementById('attStatus').value;
+  if(!student_id||!date){err.textContent='Select student and date.';err.className='alert alert-error show';return;}
+  const btn=document.getElementById('aaBtn');btn.disabled=true;btn.textContent='Marking…';
+  try {
+    const r=await fetch(`${API}/add-attendance`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({student_id,school_id:SID,date,status})});
+    const d=await r.json();
+    if(d.success){ok.textContent='Attendance marked!';ok.className='alert alert-success show';toast('📅 Attendance marked!');}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Mark Attendance';}
+});
+
+// ── Notices ───────────────────────────────────────────────
+async function loadNotices() {
+  document.getElementById('noticesLoading').style.display='block';
+  document.getElementById('noticesEmpty').style.display='none';
+  document.getElementById('noticesTbody').innerHTML='';
+  try {
+    const r=await fetch(`${API}/notices/${SID}`);const d=await r.json();
+    document.getElementById('noticesLoading').style.display='none';
+    document.getElementById('stNotices').textContent = d.notices ? d.notices.length : 0;
+    if(!d.success||!d.notices.length){document.getElementById('noticesEmpty').style.display='block';return;}
+    document.getElementById('noticesTbody').innerHTML = d.notices.map(n=>`
+      <tr><td><strong>${esc(n.title)}</strong></td>
+      <td><span class="badge-pill" style="background:${n.priority==='Urgent'?'#fef2f2':n.priority==='Important'?'#fffbeb':'#eff6ff'};color:${n.priority==='Urgent'?'#dc2626':n.priority==='Important'?'#d97706':'#1d4ed8'}">${n.priority}</span></td>
+      <td style="color:var(--text-muted)">${fmtDate(n.createdAt)}</td>
+      <td>${n.file_url ? `<a href="${esc(n.file_url)}" target="_blank" style="color:var(--primary);text-decoration:underline;">View File</a>` : '—'}</td>
+      <td><button class="btn btn-danger" onclick="deleteNotice('${n._id}')">Delete</button></td></tr>`).join('');
+  }catch{document.getElementById('noticesLoading').style.display='none';toast('Cannot load notices.','error');}
+}
+
+document.getElementById('addNoticeForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('anErr'),ok=document.getElementById('anOk');
+  err.className=ok.className='alert';
+  const title=document.getElementById('nTitle').value.trim(),content=document.getElementById('nContent').value.trim(),priority=document.getElementById('nPriority').value;
+  const fileInput = document.getElementById('nFile');
+  if(!title||!content){err.textContent='Title and content required.';err.className='alert alert-error show';return;}
+
+  const formData = new FormData();
+  formData.append('school_id', SID);
+  formData.append('title', title);
+  formData.append('content', content);
+  formData.append('priority', priority);
+  if (fileInput.files.length) {
+    formData.append('file', fileInput.files[0]);
+  }
+
+  const btn=document.getElementById('anBtn');btn.disabled=true;btn.textContent='Publishing…';
+  try {
+    const r=await fetch(`${API}/add-notice`,{method:'POST',body:formData});
+    const d=await r.json();
+    if(d.success){ok.textContent='Notice published!';ok.className='alert alert-success show';document.getElementById('addNoticeForm').reset();loadNotices();toast('📢 Notice posted!');}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Publish Notice';}
+});
+
+async function deleteNotice(id) {
+  if(!confirm('Delete this notice?'))return;
+  const r=await fetch(`${API}/notice/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({school_id:SID})});
+  const d=await r.json();
+  if(d.success){toast('Notice deleted.');loadNotices();}else toast(d.message,'error');
+}
+
+// ── Assignments ───────────────────────────────────────────
+async function loadAssignments() {
+  document.getElementById('assignmentsLoading').style.display='block';
+  document.getElementById('assignmentsEmpty').style.display='none';
+  document.getElementById('assignmentsTbody').innerHTML='';
+  try {
+    const r=await fetch(`${API}/assignments/school/${SID}`);const d=await r.json();
+    document.getElementById('assignmentsLoading').style.display='none';
+    document.getElementById('stAssignments').textContent = d.assignments ? d.assignments.length : 0;
+    if(!d.success||!d.assignments.length){document.getElementById('assignmentsEmpty').style.display='block';return;}
+    document.getElementById('assignmentsTbody').innerHTML = d.assignments.map(a=>`
+      <tr><td><strong>${esc(a.title)}</strong></td><td>${esc(a.class)}</td><td>${esc(a.subject)}</td>
+      <td style="color:var(--text-muted)">${fmtDate(a.due_date)}</td>
+      <td><button class="btn btn-danger" onclick="deleteAssignment('${a._id}')">Delete</button></td></tr>`).join('');
+  }catch{document.getElementById('assignmentsLoading').style.display='none';toast('Cannot load.','error');}
+}
+
+document.getElementById('addAsForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('assErr'),ok=document.getElementById('assOk');
+  err.className=ok.className='alert';
+  const title=document.getElementById('asTitle').value.trim(),cls=document.getElementById('asClass').value.trim();
+  const subject=document.getElementById('asSubject').value.trim(),due_date=document.getElementById('asDueDate').value;
+  const description=document.getElementById('asDesc').value.trim();
+  if(!title||!cls||!due_date||!description){err.textContent='All fields required.';err.className='alert alert-error show';return;}
+  const btn=document.getElementById('assBtn');btn.disabled=true;btn.textContent='Posting…';
+  try {
+    const r=await fetch(`${API}/add-assignment`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({school_id:SID,title,class:cls,subject,due_date,description})});
+    const d=await r.json();
+    if(d.success){ok.textContent='Assignment posted!';ok.className='alert alert-success show';document.getElementById('addAsForm').reset();loadAssignments();toast('📝 Assignment posted!');}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Post Assignment';}
+});
+
+async function deleteAssignment(id) {
+  if(!confirm('Delete this assignment?'))return;
+  const r=await fetch(`${API}/assignment/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({school_id:SID})});
+  const d=await r.json();
+  if(d.success){toast('Assignment deleted.');loadAssignments();}else toast(d.message,'error');
+}
+
+// ── Teachers ──────────────────────────────────────────────
+async function loadTeachers() {
+  document.getElementById('teachersLoading').style.display='block';
+  document.getElementById('teachersEmpty').style.display='none';
+  document.getElementById('teachersTbody').innerHTML='';
+  try {
+    const r=await fetch(`${API}/teachers/${SID}`);const d=await r.json();
+    document.getElementById('teachersLoading').style.display='none';
+    if(!d.success||!d.teachers.length){document.getElementById('teachersEmpty').style.display='block';return;}
+    document.getElementById('teachersTbody').innerHTML=d.teachers.map((t,i)=>`
+      <tr><td style="color:var(--text-muted)">${i+1}</td><td><strong>${esc(t.name)}</strong></td><td>${esc(t.subject)}</td>
+      <td style="font-family:monospace;color:#16a34a">${esc(t.login_id)}</td>
+      <td><button class="btn btn-danger" onclick="deleteTeacher('${t._id}','${esc(t.name)}')">Delete</button></td></tr>`).join('');
+  }catch{document.getElementById('teachersLoading').style.display='none';toast('Cannot load teachers.','error');}
+}
+
+document.getElementById('addTeacherForm').addEventListener('submit', async e=>{
+  e.preventDefault();const err=document.getElementById('atErr'),ok=document.getElementById('atOk');err.className=ok.className='alert';
+  const name=document.getElementById('tName').value.trim(),subject=document.getElementById('tSubject').value.trim();
+  const login_id=document.getElementById('tLoginId').value.trim(),password=document.getElementById('tPassword').value;
+  if(!name||!subject||!login_id||!password){err.textContent='All fields required.';err.className='alert alert-error show';return;}
+  const btn=document.getElementById('atBtn');btn.disabled=true;btn.textContent='Adding…';
+  try{
+    const r=await fetch(`${API}/add-teacher`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,subject,school_id:SID,login_id,password})});
+    const d=await r.json();
+    if(d.success){ok.textContent=`${name} added! Login: ${login_id}`;ok.className='alert alert-success show';document.getElementById('addTeacherForm').reset();toast(`🧑‍🏫 ${name} added!`);}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Add Teacher';}
+});
+
+document.getElementById('bulkTeacherForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('btErr'), ok=document.getElementById('btOk'); err.className=ok.className='alert';
+  const fileInput = document.getElementById('bulkTeacherFile');
+  if(!fileInput.files.length){err.textContent='Please select a file.';err.className='alert alert-error show';return;}
+  const formData = new FormData(); formData.append('file', fileInput.files[0]); formData.append('school_id', SID);
+  const btn=document.getElementById('btBtn');btn.disabled=true;btn.textContent='Uploading…';
+  try {
+    const r=await fetch(`${API}/bulk-add-teachers`, { method:'POST', body: formData });
+    const d=await r.json();
+    if(d.success){ok.textContent=d.message;ok.className='alert alert-success show';document.getElementById('bulkTeacherForm').reset();loadTeachers();toast(`✅ Teachers bulk uploaded!`);}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Upload & Enroll';}
+});
+
+async function deleteTeacher(id,name){
+  if(!confirm(`Remove teacher "${name}"?`))return;
+  const r=await fetch(`${API}/teacher/${id}`,{method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({school_id:SID})});
+  const d=await r.json();
+  if(d.success){toast(`${name} removed.`);loadTeachers();}else toast(d.message,'error');
+}
+
+let teachersCache = [];
+async function loadTeachers() {
+  document.getElementById('teachersLoading').style.display = 'block';
+  document.getElementById('teachersEmpty').style.display = 'none';
+  document.getElementById('teachersTbody').innerHTML = '';
+  try {
+    const r = await fetch(`${API}/teachers/${SID}`);
+    const d = await r.json();
+    document.getElementById('teachersLoading').style.display = 'none';
+    if (!d.success) { toast(d.message, 'error'); return; }
+    teachersCache = d.teachers || [];
+    if (!teachersCache.length) {
+      document.getElementById('teachersEmpty').style.display = 'block';
+    } else {
+      document.getElementById('teachersTbody').innerHTML = teachersCache.map((t, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td><strong>${esc(t.name)}</strong></td>
+          <td>${esc(t.subject)}</td>
+          <td style="font-family:monospace;color:var(--text-muted)">${esc(t.login_id)}</td>
+          <td><button class="btn btn-danger" onclick="deleteTeacher('${t._id}', '${esc(t.name)}')">Delete</button></td>
+        </tr>
+      `).join('');
+    }
+  } catch {
+    toast('Cannot load teachers.', 'error');
+    document.getElementById('teachersLoading').style.display = 'none';
+  }
+}
+
+// ── Parents ───────────────────────────────────────────────
+document.getElementById('addParentForm').addEventListener('submit', async e=>{
+  e.preventDefault();const err=document.getElementById('apErr'),ok=document.getElementById('apOk');err.className=ok.className='alert';
+  const name=document.getElementById('pName').value.trim(),student_id=document.getElementById('pStudent').value;
+  const login_id=document.getElementById('pLoginId').value.trim();
+  if(!name||!student_id||!login_id){err.textContent='All fields required.';err.className='alert alert-error show';return;}
+  const btn=document.getElementById('apBtn');btn.disabled=true;btn.textContent='Adding…';
+  try{
+    const r=await fetch(`${API}/add-parent`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,student_id,school_id:SID,login_id})});
+    const d=await r.json();
+    if(d.success){ok.textContent=`Parent ${name} linked! Login: ${login_id}`;ok.className='alert alert-success show';document.getElementById('addParentForm').reset();loadStudentDropdowns();toast(`👨‍👩‍👧 ${name} added!`);}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Add Parent';}
+});
+
+function loadStudentDropdowns() {
+  ['attStudent','pStudent'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) {
+      el.innerHTML = '<option value="">-- Select Student --</option>';
+      studentsCache.forEach(s => { el.innerHTML += `<option value="${s._id}">${esc(s.name)} (${esc(s.login_id)})</option>`; });
+    }
+  });
+
+  const mClass = document.getElementById('mClass');
+  if (mClass) {
+    const classes = [...new Set(studentsCache.map(s => s.class))].filter(Boolean).sort();
+    mClass.innerHTML = '<option value="">-- Select Class --</option>' + classes.map(c => `<option value="${c}">${esc(c)}</option>`).join('');
+  }
+
+  if (!studentsCache.length) fetch(`${API}/students/${SID}`).then(r=>r.json()).then(d=>{ if(d.success){ studentsCache=d.students; loadStudentDropdowns(); } });
+}
+
+// ── Staff ─────────────────────────────────────────────────
+document.getElementById('addStaffForm').addEventListener('submit', async e=>{
+  e.preventDefault();const err=document.getElementById('asfErr'),ok=document.getElementById('asfOk');err.className=ok.className='alert';
+  const name=document.getElementById('sfName').value.trim(),role=document.getElementById('sfRole').value.trim();
+  const login_id=document.getElementById('sfLoginId').value.trim();
+  if(!name||!role||!login_id){err.textContent='All fields required.';err.className='alert alert-error show';return;}
+  const btn=document.getElementById('asfBtn');btn.disabled=true;btn.textContent='Adding…';
+  try{
+    const r=await fetch(`${API}/add-staff`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,role,school_id:SID,login_id})});
+    const d=await r.json();
+    if(d.success){ok.textContent=`Staff ${name} added! Login: ${login_id}`;ok.className='alert alert-success show';document.getElementById('addStaffForm').reset();toast(`🧑‍💼 ${name} added!`);}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Add Staff';}
+});
+
+document.getElementById('bulkStaffForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const err=document.getElementById('bsfErr'), ok=document.getElementById('bsfOk'); err.className=ok.className='alert';
+  const fileInput = document.getElementById('bulkStaffFile');
+  if(!fileInput.files.length){err.textContent='Please select a file.';err.className='alert alert-error show';return;}
+  const formData = new FormData(); formData.append('file', fileInput.files[0]); formData.append('school_id', SID);
+  const btn=document.getElementById('bsfBtn');btn.disabled=true;btn.textContent='Uploading…';
+  try {
+    const r=await fetch(`${API}/bulk-add-staff`, { method:'POST', body: formData });
+    const d=await r.json();
+    if(d.success){ok.textContent=d.message;ok.className='alert alert-success show';document.getElementById('bulkStaffForm').reset();toast(`✅ Staff bulk uploaded!`);}
+    else{err.textContent=d.message;err.className='alert alert-error show';}
+  }catch{err.textContent='Server error.';err.className='alert alert-error show';}
+  finally{btn.disabled=false;btn.textContent='Upload & Enroll';}
+});
+
+// ── Init ──────────────────────────────────────────────────
+loadStudents();
+</script>
+</body>
+</html>

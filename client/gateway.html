@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SchoolERP - Central Portal</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+    body { background: #f0f4f9; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .gateway-card { background: #fff; width: 100%; max-width: 440px; padding: 40px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); text-align: center; }
+    .icon { font-size: 3rem; margin-bottom: 20px; }
+    h1 { font-size: 1.5rem; color: #1e293b; margin-bottom: 8px; }
+    p { color: #64748b; font-size: 0.95rem; margin-bottom: 30px; }
+    .form-group { text-align: left; margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 8px; }
+    .form-group input { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; }
+    .btn { width: 100%; padding: 14px; background: #2563eb; color: #fff; font-size: 1rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    .btn:hover { background: #1d4ed8; }
+    .alert { padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 15px; display: none; }
+    .alert-error { background: #fee2e2; color: #b91c1c; display: block; }
+    .footer-links { margin-top: 24px; font-size: 0.85rem; color: #64748b; }
+    .footer-links a { color: #2563eb; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <div class="gateway-card">
+    <div class="icon">🏫</div>
+    <h1>School Management System</h1>
+    <p>Search your school to access the portal</p>
+
+    <form id="gatewayForm">
+      <div class="form-group">
+        <label>School Name</label>
+        <input type="text" id="gSchool" placeholder="e.g. Jindal Adarsh School" required>
+      </div>
+      <div class="form-group">
+        <label>School Passkey</label>
+        <input type="password" id="gPass" placeholder="Enter 4-digit passkey" required>
+      </div>
+      <div id="gErr" class="alert" style="display:none;"></div>
+      <button type="submit" class="btn">Search & Open Website ➔</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('gatewayForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const s = document.getElementById('gSchool').value.trim().toLowerCase();
+      const p = document.getElementById('gPass').value;
+      const err = document.getElementById('gErr');
+
+      // Static check for Jindal Adarsh School
+      if (s.includes('jindal') && p === '1234') {
+        localStorage.setItem('school_name', 'Jindal Adarsh School');
+        localStorage.setItem('school_id', '69c65257a02e145789f992a3');
+        // Redirect to the role selection portals page
+        location.href = 'portals.html'; 
+      } else {
+        err.style.display = 'block';
+        err.className = 'alert alert-error';
+        err.textContent = 'School not found or invalid passkey. Hint: Jindal / 1234';
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Jindal Adarsh School – Official Website</title>
+  <meta name="description" content="Official website of Jindal Adarsh School."/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Jindal Adarsh Website Layout (Restored) ────────── */
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+    body{background:#f8f9fa;color:#333;overflow-x:hidden;}
+    a{text-decoration:none;}
+
+    /* Top Red Bar */
+    .top-red-bar{background:#cc0000;color:#fff;padding:8px 30px;display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;}
+    .top-links{display:flex;gap:20px;align-items:center;}
+    .top-links a{color:#fff;font-weight:600;transition:opacity 0.2s;}
+    .top-links a:hover{opacity:0.8;}
+    
+    .login-group{display:flex;align-items:center;gap:8px;}
+    .login-label{font-weight:bold;margin-right:8px;font-size:0.9rem;}
+    .l-btn{padding:4px 12px;font-size:0.85rem;font-weight:bold;color:#fff;border-radius:4px;transition:transform 0.2s;}
+    .l-btn:hover{transform:translateY(-2px);}
+    .l-student{background:#f59e0b;} /* Orange */
+    .l-parent{background:#0ea5e9;} /* Light Blue */
+    .l-emp{background:#1e3a8a;} /* Dark Blue */
+    .l-admin{background:#16a34a;} /* Green */
+
+    /* Middle Header Banner */
+    .header-middle{background:#fff;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;}
+    .brand-area{display:flex;align-items:center;gap:20px;}
+    .logo-icon{width:70px;height:70px;background:#1e3a8a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:2.2rem;border-radius:50%;font-weight:900;box-shadow:0 4px 10px rgba(30,58,138,0.3);}
+    .brand-text h1{font-size:1.8rem;color:#1e3a8a;margin-bottom:2px;letter-spacing:0.5px;font-weight:800;text-transform:uppercase;}
+    .brand-text p{font-size:0.9rem;color:#555;font-weight:600;}
+    
+    .accreditations{display:flex;gap:20px;align-items:center;}
+    .badge{width:60px;height:60px;border-radius:50%;background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;text-align:center;border:2px solid;box-shadow:0 4px 10px rgba(0,0,0,0.05);}
+
+    /* Main Blue Navigation */
+    .main-nav{background:#0f172a;border-bottom:4px solid #cc0000;box-shadow:0 4px 15px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100;}
+    .nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;padding:0 30px;}
+    .nav-inner a{color:#fff;padding:16px 25px;font-size:1rem;font-weight:600;transition:background 0.2s;text-transform:uppercase;letter-spacing:0.5px;}
+    .nav-inner a:hover{background:#1e293b;}
+    .nav-inner a.home-icon{font-size:1.4rem;padding:14px 25px;}
+
+    /* Hero Section */
+    .hero-section{position:relative;height:85vh;min-height:550px;background:#0f172a;display:flex;align-items:center;overflow:hidden;}
+    .hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0.8;}
+    .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to right, rgba(15,23,42,0.9), rgba(15,23,42,0.4));z-index:2;}
+    .hero-content{padding:0 80px;max-width:900px;color:#fff;position:relative;z-index:10;}
+    .hero-content h2{font-size:3.5rem;margin-bottom:10px;font-weight:900;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
+    .hero-content h3{font-size:1.6rem;font-weight:400;color:#cbd5e1;text-shadow:0 2px 10px rgba(0,0,0,0.5);}
+    
+    /* Right Action Buttons */
+    .action-panel{position:absolute;right:0;top:100px;display:flex;flex-direction:column;gap:15px;z-index:20;}
+    .action-btn{background:#0f172a;color:#fff;padding:14px 30px;font-weight:700;font-size:1.05rem;border-radius:30px 0 0 30px;box-shadow:-5px 5px 15px rgba(0,0,0,0.2);transition:all 0.3s;display:block;border:2px solid transparent;}
+    .action-btn:hover{transform:translateX(-10px);background:#1e293b;}
+    .action-btn.red{background:#cc0000;}
+    .action-btn.red:hover{background:#a30000;}
+
+    /* Marquee */
+    .marquee-bar{background:#f1f5f9;padding:12px 30px;font-size:0.95rem;font-weight:bold;color:#1e293b;display:flex;align-items:center;border-bottom:1px solid #cbd5e1;}
+    .marquee-label{background:#cc0000;color:#fff;padding:4px 15px;border-radius:4px;margin-right:20px;white-space:nowrap;font-size:0.85rem;}
+
+    /* Content Layout (About + Notice Board) */
+    .main-grid{max-width:1400px;margin:50px auto;display:grid;grid-template-columns:2fr 1fr;gap:40px;padding:0 40px;}
+    
+    .about-sec h2{font-size:2.2rem;color:#0f172a;margin-bottom:20px;border-left:5px solid #cc0000;padding-left:15px;}
+    .about-text{font-size:1.1rem;color:#475569;line-height:1.8;margin-bottom:20px;}
+    
+    .notice-board-panel{background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.05);overflow:hidden;}
+    .nb-head{background:#0f172a;color:#fff;padding:15px 20px;font-size:1.2rem;font-weight:700;display:flex;justify-content:space-between;}
+    .nb-list{padding:15px;}
+    .nb-item{padding:12px 10px;border-bottom:1px solid #f1f5f9;display:flex;gap:15px;align-items:center;}
+    .nb-item:last-child{border-bottom:none;}
+    .nb-date-badge{background:#fefce8;border:1px solid #fef08a;color:#ca8a04;padding:8px;border-radius:8px;text-align:center;min-width:60px;}
+    .nb-date-badge span{display:block;font-size:1.2rem;font-weight:900;}
+    .nb-date-badge small{font-size:0.7rem;text-transform:uppercase;font-weight:700;}
+    .nb-title{font-weight:600;color:#1e293b;font-size:0.95rem;line-height:1.4;}
+
+    /* Portals Grid */
+    .portals-sec{max-width:1400px;margin:0 auto 80px;padding:0 40px;}
+    .portals-sec h2{text-align:center;font-size:2.2rem;color:#0f172a;margin-bottom:40px;}
+    .p-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:25px;}
+    .p-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,0.06);transition:transform 0.3s;border-bottom:4px solid transparent;}
+    .p-card:hover{transform:translateY(-10px);}
+    .p-card.s-stu{border-bottom-color:#f59e0b;}
+    .p-card.s-par{border-bottom-color:#0ea5e9;}
+    .p-card.s-tea{border-bottom-color:#1e3a8a;}
+    .p-card.s-adm{border-bottom-color:#16a34a;}
+    .p-img{width:100%;height:180px;object-fit:cover;}
+    .p-text{padding:20px;text-align:center;}
+    .p-text h3{font-size:1.2rem;color:#0f172a;margin-bottom:5px;}
+    .p-text p{font-size:0.85rem;color:#64748b;font-weight:600;text-transform:uppercase;}
+
+  </style>
+  <script>
+    if (!localStorage.getItem('school_id')) localStorage.setItem('school_name', 'Jindal Adarsh School');
+  </script>
+</head>
+<body>
+
+  <!-- Middle Header -->
+  <div class="header-middle">
+    <div class="brand-area">
+      <div class="logo-icon">JAS</div>
+      <div class="brand-text">
+        <h1>Jindal Adarsh School</h1>
+        <p>A Heritage of Excellence in Education (Estd. 1995)</p>
+      </div>
+    </div>
+    
+    <div class="login-group">
+      <a href="gateway.html" class="l-btn l-admin" style="padding:10px 24px; font-size:1.05rem; background:#cc0000; box-shadow:0 4px 15px rgba(204,0,0,0.3);">Login Portals →</a>
+    </div>
+  </div>
+
+  <!-- Main Navigation -->
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a href="#" class="home-icon">🏠</a>
+      <a href="#about">About Us</a>
+      <a href="#academics">Academics</a>
+      <a href="#admission">Admission</a>
+      <a href="#facilities">Facilities</a>
+      <a href="#campus-life">Campus Life</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <!-- Background Video -->
+    <video class="hero-video" autoplay loop muted playsinline>
+      <source src="Cinematic_Drone_School_Campus_Footage.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h2>Empowering the Leaders of Tomorrow</h2>
+      <h3>Nurturing intellect, character, and vision.</h3>
+    </div>
+    
+    <div class="action-panel">
+      <a href="#" class="action-btn">News & Events</a>
+      <a href="#" class="action-btn red">📞 011-4567-8900</a>
+      <a href="#" class="action-btn">Online Payment</a>
+      <a href="#" class="action-btn red">Examination Hub</a>
+      <a href="#noticeBoard" class="action-btn">Notice Board</a>
+    </div>
+  </div>
+
+  <!-- Marquee -->
+  <div class="marquee-bar">
+    <span class="marquee-label">LATEST UPDATES</span>
+    <marquee scrollamount="6">
+      Admissions Open for Session 2026-27 (Nursery to Class XI) • Last date to submit tuition fee for Quarter 2 is April 15th • Annual Sports Meet scheduled for May 10th.
+    </marquee>
+  </div>
+
+  <!-- About & Notice Board Grid -->
+  <div class="main-grid" id="about">
+    <div class="about-sec">
+      <h2>About Jindal Adarsh School</h2>
+      <p class="about-text">
+        Founded in 1995, Jindal Adarsh School (JAS) stands as a premier educational institution dedicated to excellence in New Delhi. Under the visionary guidance of our founders, the school provides an enriching environment where academic rigor meets character building.
+      </p>
+      <p class="about-text">
+        Our curriculum is designed to foster critical thinking, creativity, and a lifelong love for learning. With state-of-the-art facilities, dedicated educators, and comprehensive co-curricular programs, we ensure that every student is equipped with the skills necessitated by a rapidly modernizing world while remaining rooted in strong ethical values.
+      </p>
+      
+      <div style="display:flex; gap:30px; margin-top:40px;">
+        <div style="background:#f8fafc; padding:20px; border-radius:12px; flex:1; border-left:4px solid #cc0000; box-shadow:0 4px 10px rgba(0,0,0,0.02)">
+          <h4 style="font-size:2.2rem; color:#1e3a8a; font-weight:900;">25+</h4>
+          <span style="font-weight:700; color:#64748b;">Years of Legacy</span>
+        </div>
+        <div style="background:#f8fafc; padding:20px; border-radius:12px; flex:1; border-left:4px solid #16a34a; box-shadow:0 4px 10px rgba(0,0,0,0.02)">
+          <h4 style="font-size:2.2rem; color:#1e3a8a; font-weight:900;">4.5K+</h4>
+          <span style="font-weight:700; color:#64748b;">Enrolled Students</span>
+        </div>
+        <div style="background:#f8fafc; padding:20px; border-radius:12px; flex:1; border-left:4px solid #f59e0b; box-shadow:0 4px 10px rgba(0,0,0,0.02)">
+          <h4 style="font-size:2.2rem; color:#1e3a8a; font-weight:900;">100%</h4>
+          <span style="font-weight:700; color:#64748b;">Board Results</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="notice-board-panel" id="noticeBoard">
+      <div class="nb-head">
+        <span>📋 Official Notice Board</span>
+      </div>
+      <div class="nb-list">
+        <div class="nb-item">
+          <div class="nb-date-badge"><span>12</span><small>Apr</small></div>
+          <div class="nb-title">Pre-Board Examination Date Sheet Released for Class X & XII.</div>
+        </div>
+        <div class="nb-item">
+          <div class="nb-date-badge"><span>05</span><small>Apr</small></div>
+          <div class="nb-title">Parent-Teacher Meeting for primary wing scheduled for this Saturday.</div>
+        </div>
+        <div class="nb-item">
+          <div class="nb-date-badge"><span>28</span><small>Mar</small></div>
+          <div class="nb-title">Important: Online fee payment portal will undergo maintenance early morning.</div>
+        </div>
+        <div class="nb-item">
+          <div class="nb-date-badge"><span>20</span><small>Mar</small></div>
+          <div class="nb-title">Inter-school debate competition finals. Participants please report to hall.</div>
+        </div>
+      </div>
+      <a href="#" style="display:block; text-align:center; padding:15px; background:#f8fafc; color:#1e3a8a; font-weight:bold; border-top:1px solid #e2e8f0;">View All Notices →</a>
+    </div>
+  </div>
+
+  <!-- Academics Section -->
+  <div id="academics" style="background:#fff; padding:80px 40px;">
+    <div style="max-width:1400px; margin:0 auto; text-align:center;">
+      <h2 style="font-size:2.2rem; color:#0f172a; margin-bottom:20px;">Academics & Curriculum</h2>
+      <p style="font-size:1.1rem; color:#475569; max-width:800px; margin:0 auto 40px;">We follow a rigorous CBSE curriculum enriched with modern teaching methodologies to prepare students for global challenges.</p>
+      
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:30px;">
+        <div style="border:1px solid #e2e8f0; border-radius:12px; padding:30px; text-align:center;">
+          <div style="font-size:3rem; margin-bottom:15px;">📚</div>
+          <h3 style="color:#1e3a8a; margin-bottom:10px;">Primary Wing</h3>
+          <p style="color:#64748b; font-size:0.95rem;">Focusing on foundational learning, creativity, and interactive play-based education for Nursery to Class 5.</p>
+        </div>
+        <div style="border:1px solid #e2e8f0; border-radius:12px; padding:30px; text-align:center;">
+          <div style="font-size:3rem; margin-bottom:15px;">🔬</div>
+          <h3 style="color:#1e3a8a; margin-bottom:10px;">Middle Wing</h3>
+          <p style="color:#64748b; font-size:0.95rem;">Connecting theoretical knowledge to practical applications with STEM labs and critical thinking for Classes 6 to 8.</p>
+        </div>
+        <div style="border:1px solid #e2e8f0; border-radius:12px; padding:30px; text-align:center;">
+          <div style="font-size:3rem; margin-bottom:15px;">🎓</div>
+          <h3 style="color:#1e3a8a; margin-bottom:10px;">Senior Wing</h3>
+          <p style="color:#64748b; font-size:0.95rem;">Advanced preparation for board exams and careers with specialized streams (Science, Commerce, Humanities) for Classes 9 to 12.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admission Section -->
+  <div id="admission" style="background:#f1f5f9; padding:80px 40px;">
+    <div style="max-width:1400px; margin:0 auto; display:flex; align-items:center; gap:50px;">
+      <div style="flex:1;">
+        <h2 style="font-size:2.2rem; color:#0f172a; margin-bottom:20px;">Admissions Open 2026-27</h2>
+        <p style="font-size:1.1rem; color:#475569; margin-bottom:25px; line-height:1.7;">Join the Jindal Adarsh family! We are currently accepting applications for the upcoming academic session. Discover how our community fosters brilliance.</p>
+        <ul style="list-style:none; padding:0; margin-bottom:30px; color:#1e293b; font-weight:600; font-size:1.05rem;">
+          <li style="margin-bottom:10px;">✅ Online Registration Available</li>
+          <li style="margin-bottom:10px;">✅ Merit-Based Scholarships</li>
+          <li style="margin-bottom:10px;">✅ Transparent Selection Process</li>
+        </ul>
+        <a href="#" class="l-btn l-admin" style="padding:15px 30px; font-size:1.1rem; display:inline-block; border-radius:8px;">Apply Now</a>
+      </div>
+      <div style="flex:1;">
+        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop" style="width:100%; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.1);" alt="Students">
+      </div>
+    </div>
+  </div>
+
+  <!-- Facilities & Campus Life -->
+  <div id="facilities" style="background:#fff; padding:80px 40px;">
+    <div style="max-width:1400px; margin:0 auto; text-align:center;">
+      <h2 style="font-size:2.2rem; color:#0f172a; margin-bottom:10px;">World-Class Facilities</h2>
+      <p style="font-size:1.1rem; color:#475569; margin-bottom:40px;">Providing an environment where students thrive.</p>
+      
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;" id="campus-life">
+        <div style="position:relative; height:250px; border-radius:12px; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; padding:20px; background:linear-gradient(transparent, rgba(0,0,0,0.8)); width:100%; color:#fff; text-align:left; font-weight:700;">Smart Classrooms</div>
+        </div>
+        <div style="position:relative; height:250px; border-radius:12px; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1568667256549-094345857637?q=80&w=2030&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; padding:20px; background:linear-gradient(transparent, rgba(0,0,0,0.8)); width:100%; color:#fff; text-align:left; font-weight:700;">Central Library</div>
+        </div>
+        <div style="position:relative; height:250px; border-radius:12px; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=2070&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; padding:20px; background:linear-gradient(transparent, rgba(0,0,0,0.8)); width:100%; color:#fff; text-align:left; font-weight:700;">Sports Complex</div>
+        </div>
+        <div style="position:relative; height:250px; border-radius:12px; overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop" style="width:100%; height:100%; object-fit:cover;">
+          <div style="position:absolute; bottom:0; padding:20px; background:linear-gradient(transparent, rgba(0,0,0,0.8)); width:100%; color:#fff; text-align:left; font-weight:700;">Advanced STEM Labs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <div id="contact" style="background:#0f172a; padding:60px 40px; color:#cbd5e1; border-top:4px solid #cc0000;">
+    <div style="max-width:1400px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr 1fr; gap:40px;">
+      <div>
+        <h3 style="color:#fff; font-size:1.4rem; margin-bottom:15px; font-weight:800;">Jindal Adarsh School</h3>
+        <p style="font-size:0.95rem; line-height:1.6; margin-bottom:20px;">Empowering the Leaders of Tomorrow. A Heritage of Excellence in Education since 1995 in the heart of New Delhi.</p>
+        <p><strong>Email:</strong> info@jindaladarsh.edu</p>
+        <p><strong>Phone:</strong> 011-4567-8900</p>
+      </div>
+      <div>
+        <h3 style="color:#fff; font-size:1.2rem; margin-bottom:15px; font-weight:700;">Quick Links</h3>
+        <ul style="list-style:none; padding:0; line-height:2;">
+          <li><a href="#about" style="color:#94a3b8;">About Us</a></li>
+          <li><a href="#admission" style="color:#94a3b8;">Admissions</a></li>
+          <li><a href="#academics" style="color:#94a3b8;">Academics</a></li>
+          <li><a href="#facilities" style="color:#94a3b8;">Campus Life</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color:#fff; font-size:1.2rem; margin-bottom:15px; font-weight:700;">Visit Us</h3>
+        <p style="margin-bottom:15px;">A-12, Institutional Area, Sector 5<br>New Delhi, 110059<br>India</p>
+        <div style="background:#1e293b; padding:15px; border-radius:8px; text-align:center; font-weight:600; border:1px solid #334155;">
+          School Hours: 7:30 AM - 2:00 PM
+        </div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,#1e3a8a,#1e40af); padding:40px; border-radius:12px; text-align:center; margin-bottom:40px; border:1px solid rgba(255,255,255,0.1); box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+      <h3 style="color:#fff; font-size:1.8rem; margin-bottom:15px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">Make Your School Website and Management System</h3>
+      <p style="color:#bfdbfe; font-size:1.1rem; margin-bottom:20px; font-weight:600;">Empower your institution with cutting-edge digital solutions.</p>
+      <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+        <a href="mailto:atulpandey3680@gmail.com" style="background:#fff; color:#1e3a8a; padding:12px 25px; border-radius:8px; font-weight:700; display:flex; align-items:center; gap:8px;">📧 atulpandey3680@gmail.com</a>
+        <a href="tel:7987699628" style="background:#cc0000; color:#fff; padding:12px 25px; border-radius:8px; font-weight:700; display:flex; align-items:center; gap:8px;">📞 7987699628</a>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:40px; padding-top:20px; border-top:1px solid #1e293b; font-size:0.85rem;">
+      &copy; 2026 Jindal Adarsh School. All Rights Reserved.
+    </div>
+  </div>
+
+  <script>
+    // Auto-logout when returning to the landing page as requested
+    function clearPortalSession() {
+      const keys = ['teacher_id', 'admin_id', 'school_id', 'student_id', 'parent_id', 'staff_id', 'role', 'user_name', 'user_subject', 'school_name'];
+      keys.forEach(k => localStorage.removeItem(k));
+    }
+    // Only clear if we came from a dashboard (or just always clear on landing page per request)
+    if (document.referrer.includes('dashboard') || document.referrer.includes('login')) {
+      clearPortalSession();
+    }
+  </script>
+</body>
+</html>

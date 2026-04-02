@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Jindal Adarsh School – Official Website</title>
+  <meta name="description" content="Official website of Jindal Adarsh School."/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Jindal Adarsh Website Layout ────────────────────── */
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+    body{background:#f8f9fa;color:#333;}
+    a{text-decoration:none;}
+
+    /* Top Red Bar */
+    .top-red-bar{background:#cc0000;color:#fff;padding:4px 20px;display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;}
+    .top-links{display:flex;gap:15px;align-items:center;}
+    .top-links a{color:#fff;font-weight:600;transition:opacity 0.2s;}
+    .top-links a:hover{opacity:0.8;}
+    
+    .login-group{display:flex;align-items:center;gap:6px;}
+    .login-label{font-weight:bold;margin-right:4px;}
+    .l-btn{padding:2px 8px;font-size:0.8rem;font-weight:bold;color:#fff;border-radius:2px;}
+    .l-student{background:#f59e0b;} /* Orange */
+    .l-parent{background:#0ea5e9;} /* Light Blue */
+    .l-emp{background:#1e3a8a;} /* Dark Blue */
+    .l-admin{background:#047857;} /* Green */
+
+    /* Middle Header Banner */
+    .header-middle{background:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
+    .brand-area{display:flex;align-items:center;gap:15px;}
+    .logo-icon{width:60px;height:60px;background:#1e3a8a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:2rem;border-radius:50%;}
+    .brand-text h1{font-size:1.6rem;color:#1e3a8a;margin-bottom:2px;letter-spacing:0.5px;}
+    .brand-text p{font-size:0.85rem;color:#555;font-weight:600;}
+    
+    .accreditations{display:flex;gap:15px;align-items:center;}
+    .badge{width:50px;height:50px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:bold;text-align:center;border:1px solid #cbd5e1;color:#1e293b;}
+
+    /* Main Blue Navigation */
+    .main-nav{background:#0f172a;border-bottom:3px solid #cc0000;}
+    .nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;padding:0 20px;}
+    .nav-inner a{color:#fff;padding:14px 20px;font-size:0.95rem;font-weight:500;transition:background 0.2s;}
+    .nav-inner a:hover{background:#1e293b;}
+    .nav-inner a.home-icon{font-size:1.2rem;padding:12px 20px;}
+
+    /* Hero Section */
+    .hero-section{position:relative;height:500px;background:linear-gradient(to right, rgba(240,249,255,0.9), rgba(240,249,255,0.4)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop');background-size:cover;background-position:center;}
+    .hero-content{padding:100px 60px;max-width:800px;}
+    .hero-content h2{font-size:3rem;color:#334155;margin-bottom:5px;font-weight:300;}
+    .hero-content h3{font-size:1.5rem;color:#475569;font-weight:400;}
+    
+    /* Right Action Buttons */
+    .action-panel{position:absolute;right:0;top:80px;display:flex;flex-direction:column;gap:15px;}
+    .action-btn{background:#0f172a;color:#fff;padding:12px 25px;font-weight:600;font-size:1rem;border-radius:20px 0 0 20px;box-shadow:-4px 4px 10px rgba(0,0,0,0.1);transition:transform 0.2s;display:block;}
+    .action-btn:hover{transform:translateX(-5px);}
+    .action-btn.red{background:#cc0000;}
+
+    /* Marquee */
+    .marquee-bar{background:#e2e8f0;padding:8px 20px;font-size:0.85rem;font-weight:bold;color:#334155;display:flex;align-items:center;border-bottom:1px solid #cbd5e1;}
+    .marquee-label{background:#0f172a;color:#fff;padding:2px 10px;border-radius:4px;margin-right:15px;white-space:nowrap;}
+
+    /* Bottom Features */
+    .features-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:20px;padding:40px 20px;max-width:1400px;margin:0 auto;}
+    .fc-card{background:#fff;border:1px solid #e2e8f0;padding:30px;text-align:center;border-top:4px solid #cc0000;box-shadow:0 10px 25px rgba(0,0,0,0.05);transition:transform 0.2s;}
+    .fc-card:hover{transform:translateY(-5px);}
+    .fc-icon{font-size:3rem;margin-bottom:15px;color:#1e3a8a;}
+    .fc-title{font-size:1.1rem;font-weight:700;color:#0f172a;}
+  </style>
+  <script>
+    // Hardcode Jindal Adarsh School ID for demo purposes if not set
+    // Normally this comes from a subdomain or a primary gateway
+    if (!localStorage.getItem('school_id')) {
+      // Mock ID for Jindal Adarsh School (assuming user registers it, or we just bypass it)
+      localStorage.setItem('school_name', 'Jindal Adarsh School');
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Top Red Bar -->
+  <div class="top-red-bar">
+    <div class="top-links">
+      <a href="#">Research</a>
+      <a href="#">Conference</a>
+      <a href="#">Central Library</a>
+      <a href="#">Syllabus</a>
+      <a href="#">LMS</a>
+      <a href="#">IIC</a>
+    </div>
+    <div class="login-group">
+      <span class="login-label">Login ➔</span>
+      <a href="student-login.html" class="l-btn l-student">Student</a>
+      <a href="parent-login.html" class="l-btn l-parent">Parent's</a>
+      <a href="teacher-login.html" class="l-btn l-emp">Employee</a>
+      <a href="admin-login.html" class="l-btn l-admin">Admin/HOD</a>
+    </div>
+  </div>
+
+  <!-- Middle Header -->
+  <div class="header-middle">
+    <div class="brand-area">
+      <div class="logo-icon">JAS</div>
+      <div class="brand-text">
+        <h1>JINDAL ADARSH SCHOOL, DELHI</h1>
+        <p>जिंदल आदर्श विद्यालय, दिल्ली (Estd. 1995)</p>
+      </div>
+    </div>
+    <div class="accreditations">
+      <div class="badge">CBSE<br>Affiliated</div>
+      <div class="badge" style="border-color:#eab308;color:#ca8a04">NAAC<br>"A"</div>
+      <div class="badge" style="border-color:#2563eb;color:#2563eb">ISO<br>9001</div>
+      <div class="badge" style="border-color:#16a34a;color:#16a34a">Green<br>School</div>
+    </div>
+  </div>
+
+  <!-- Main Navigation -->
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <a href="#" class="home-icon">🏠</a>
+      <a href="#">About</a>
+      <a href="#">Academics</a>
+      <a href="#">Admission</a>
+      <a href="#">Departments</a>
+      <a href="#">Placement</a>
+      <a href="#">Campus Life</a>
+      <a href="#">Connect</a>
+      <a href="#">Blogs</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h2>Shri O.P. Jindal</h2>
+      <h3>Founder Chairman, Governing Body<br>Member Secretary, JAS Trust</h3>
+    </div>
+    
+    <div class="action-panel">
+      <a href="#" class="action-btn">News & Events</a>
+      <a href="#" class="action-btn red">📞 011-45678900</a>
+      <a href="#" class="action-btn">Online Payment</a>
+      <a href="#" class="action-btn red">Examination</a>
+      <a href="#" class="action-btn">Notices</a>
+    </div>
+  </div>
+
+  <!-- Marquee -->
+  <div class="marquee-bar">
+    <span class="marquee-label">Latest Updates</span>
+    <marquee scrollamount="5">
+      Extension of Post Matric Scholarship (SC/ST/OBC Category) 2025-26 &nbsp;|&nbsp; 
+      Notice: Fee Submission Deadline for Quarter 2 extended to 15th April &nbsp;|&nbsp; 
+      Admissions Open for Session 2026-27 for Classes Nursery to IX. 
+    </marquee>
+  </div>
+
+  <!-- Bottom Features Grid (Placeholder similar to image bottom cut off) -->
+  <div class="features-grid">
+    <div class="fc-card">
+      <div class="fc-icon">🏆</div>
+      <div class="fc-title">Awards & Honors</div>
+    </div>
+    <div class="fc-card">
+      <div class="fc-icon">🌐</div>
+      <div class="fc-title">Global Alumni</div>
+    </div>
+    <div class="fc-card">
+      <div class="fc-icon">🔬</div>
+      <div class="fc-title">Research & Labs</div>
+    </div>
+    <div class="fc-card">
+      <div class="fc-icon">📚</div>
+      <div class="fc-title">Central Library</div>
+    </div>
+  </div>
+
+</body>
+</html>

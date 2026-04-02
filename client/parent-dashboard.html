@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Parent Dashboard – SchoolERP</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="erp-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo"><span>👨‍👩‍👧</span><strong>SchoolERP</strong></div>
+      <div class="brand-school" id="sbName">Parent Portal</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <button class="nav-item active" onclick="show('overview',this)"><span class="nav-icon">🏠</span> Dashboard</button>
+      <div class="nav-section-label">Child's Academics</div>
+      <button class="nav-item" onclick="show('marks',this)"><span class="nav-icon">📊</span> Marks</button>
+      <button class="nav-item" onclick="show('attendance',this)"><span class="nav-icon">📅</span> Attendance</button>
+      <button class="nav-item" onclick="show('notices',this)"><span class="nav-icon">📢</span> Notices</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item" onclick="logout()"><span class="nav-icon">🚪</span> Logout</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-bar">
+      <h1 id="pageTitle">Parent Dashboard</h1>
+      <div class="top-bar-right">
+        <div><div class="user-name" id="tbName">—</div><div class="user-role">Parent of <span id="tbChild">—</span></div></div>
+        <div class="avatar" id="tbAv" style="background:linear-gradient(135deg,#f59e0b,#d97706)">P</div>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <!-- OVERVIEW -->
+      <div class="page-section active" id="sec-overview">
+        <div style="margin-bottom:28px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)">
+          <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:4px">Welcome, <span id="wlcName" style="color:#f59e0b">—</span>! 👨‍👩‍👧</h2>
+          <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:12px">Monitoring academic progress of your child</p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 20px">
+              <div style="font-size:.75rem;color:#9a3412;font-weight:700;text-transform:uppercase;margin-bottom:4px">Child Name</div>
+              <div style="font-size:1.1rem;font-weight:700" id="childName">—</div>
+            </div>
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 20px">
+              <div style="font-size:.75rem;color:#1e40af;font-weight:700;text-transform:uppercase;margin-bottom:4px">Class</div>
+              <div style="font-size:1.1rem;font-weight:700" id="childClass">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="modules-grid">
+          <div class="module-card" onclick="show('marks',null)"><div class="mc-icon">📊</div><div class="mc-title">View Marks</div><div class="mc-sub">Academic scores</div></div>
+          <div class="module-card" onclick="show('attendance',null)"><div class="mc-icon">📅</div><div class="mc-title">Attendance</div><div class="mc-sub">Attendance record</div></div>
+          <div class="module-card" onclick="show('notices',null)"><div class="mc-icon">📢</div><div class="mc-title">Notices</div><div class="mc-sub">School announcements</div></div>
+        </div>
+      </div>
+
+      <!-- MARKS -->
+      <div class="page-section" id="sec-marks">
+        <div class="panel">
+          <div class="panel-head"><h2>📊 Child's Marks</h2><button class="btn btn-ghost btn-sm" onclick="loadMarks()">🔄</button></div>
+          <div class="panel-body">
+            <div class="marks-grid" id="marksGrid"><div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div></div>
+            <div class="empty-state" id="marksEmpty" style="display:none"><div class="es-icon">📊</div><p>No marks recorded yet.</p></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>📋 Detail</h2></div>
+          <div class="panel-body-0"><div class="tbl-wrap">
+            <table><thead><tr><th>Subject</th><th>Exam</th><th>Marks</th><th>Total</th><th>%</th></tr></thead>
+            <tbody id="marksTbody"></tbody></table>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE -->
+      <div class="page-section" id="sec-attendance">
+        <div class="att-summary">
+          <div class="att-ring"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" stroke-width="10"/><circle id="ring" cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="10" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" style="transition:stroke-dashoffset 1s ease"/></svg>
+            <div class="att-ring-label"><span id="pct">0</span><small>%</small></div>
+          </div>
+          <div><div style="font-size:1rem;font-weight:700;margin-bottom:12px">Attendance Overview</div>
+            <div class="att-stats">
+              <div class="att-stat-item"><div class="att-stat-val" style="color:var(--success)" id="pr">0</div><div class="att-stat-lbl">Present</div></div>
+              <div class="att-stat-item"><div class="att-stat-val" style="color:var(--danger)"  id="ab">0</div><div class="att-stat-lbl">Absent</div></div>
+              <div class="att-stat-item"><div class="att-stat-val" style="color:var(--warning)" id="lt">0</div><div class="att-stat-lbl">Late</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>📅 Attendance Records</h2><button class="btn btn-ghost btn-sm" onclick="loadAtt()">🔄</button></div>
+          <div class="panel-body-0"><div class="tbl-wrap">
+            <table><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody id="attTbody"></tbody></table>
+            <div class="spinner-wrap" id="attLoad"><div class="spinner"></div></div>
+            <div class="empty-state" id="attEmpty" style="display:none"><div class="es-icon">📅</div><p>No attendance records.</p></div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- NOTICES -->
+      <div class="page-section" id="sec-notices">
+        <h2 class="section-title">📢 School Notices</h2>
+        <div class="notice-list-public" id="noticeList"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+        <div class="empty-state" id="noticeEmpty" style="display:none"><div class="es-icon">📢</div><p>No notices.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-wrap" id="tw"></div>
+<script>
+const API='/api';
+const PID=localStorage.getItem('parent_id'),SCHID=localStorage.getItem('school_id'),STID=localStorage.getItem('student_id');
+const UNAME=localStorage.getItem('user_name'),CNAME=localStorage.getItem('student_name'),CCLS=localStorage.getItem('student_class');
+if(!PID||localStorage.getItem('role')!=='parent') location.href='parent-login.html';
+document.getElementById('sbName').textContent=UNAME||'Parent';
+document.getElementById('tbName').textContent=UNAME||'—';
+document.getElementById('tbChild').textContent=CNAME||'—';
+document.getElementById('tbAv').textContent=(UNAME||'P')[0].toUpperCase();
+document.getElementById('wlcName').textContent=UNAME||'Parent';
+document.getElementById('childName').textContent=CNAME||'—';
+document.getElementById('childClass').textContent=CCLS||'—';
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtDate(iso){return iso?new Date(iso).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';}
+function logout(){['parent_id','school_id','student_id','user_name','student_name','student_class','role'].forEach(k=>localStorage.removeItem(k));location.href='parent-login.html';}
+function show(name,btn){
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');
+  const t={overview:'Parent Dashboard',marks:'Child\'s Marks',attendance:'Attendance',notices:'Notices'};
+  document.getElementById('pageTitle').textContent=t[name]||name;
+  if(name==='marks')loadMarks();if(name==='attendance')loadAtt();if(name==='notices')loadNotices();
+}
+async function loadMarks(){
+  document.getElementById('marksGrid').innerHTML='<div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>';
+  document.getElementById('marksTbody').innerHTML='';document.getElementById('marksEmpty').style.display='none';
+  const r=await fetch(`${API}/marks/${STID}?school_id=${SCHID}`);const d=await r.json();
+  if(!d.success||!d.marks.length){document.getElementById('marksGrid').innerHTML='';document.getElementById('marksEmpty').style.display='block';return;}
+  document.getElementById('marksGrid').innerHTML=d.marks.map(m=>{const p=Math.round((m.marks/m.total)*100);const c=p>=75?'high':p>=50?'mid':'low';return`<div class="mark-card"><div class="mark-subject">${esc(m.subject)}</div><div class="mark-score ${c}">${m.marks}</div><div class="mark-total">out of ${m.total}</div><div class="mark-type">${esc(m.exam_type)}</div></div>`;}).join('');
+  document.getElementById('marksTbody').innerHTML=d.marks.map(m=>{const p=Math.round((m.marks/m.total)*100);const c=p>=75?'var(--success)':p>=50?'var(--warning)':'var(--danger)';return`<tr><td><strong>${esc(m.subject)}</strong></td><td>${esc(m.exam_type)}</td><td>${m.marks}</td><td>${m.total}</td><td><strong style="color:${c}">${p}%</strong></td></tr>`;}).join('');
+}
+async function loadAtt(){
+  document.getElementById('attLoad').style.display='block';document.getElementById('attEmpty').style.display='none';document.getElementById('attTbody').innerHTML='';
+  const r=await fetch(`${API}/attendance/${STID}?school_id=${SCHID}`);const d=await r.json();
+  document.getElementById('attLoad').style.display='none';if(!d.success)return;
+  const s=d.summary;
+  document.getElementById('pr').textContent=s.present;document.getElementById('ab').textContent=s.absent;document.getElementById('lt').textContent=s.late;document.getElementById('pct').textContent=s.percentage;
+  const offs=251.2-(s.percentage/100)*251.2;document.getElementById('ring').style.strokeDashoffset=offs;
+  document.getElementById('ring').style.stroke=s.percentage>=75?'#22c55e':s.percentage>=50?'#f59e0b':'#ef4444';
+  if(!d.attendance.length){document.getElementById('attEmpty').style.display='block';return;}
+  document.getElementById('attTbody').innerHTML=d.attendance.map(a=>`<tr><td>${a.date}</td><td><span class="badge-pill badge-${a.status.toLowerCase()}">${a.status}</span></td></tr>`).join('');
+}
+async function loadNotices(){
+  document.getElementById('noticeList').innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';document.getElementById('noticeEmpty').style.display='none';
+  const r=await fetch(`${API}/notices/${SCHID}`);const d=await r.json();
+  if(!d.success||!d.notices.length){document.getElementById('noticeList').innerHTML='';document.getElementById('noticeEmpty').style.display='block';return;}
+  document.getElementById('noticeList').innerHTML=d.notices.map(n=>`<div class="notice-item ${n.priority.toLowerCase()}"><div class="ni-title">${esc(n.title)}</div><div class="ni-content">${esc(n.content)}</div><div class="ni-meta">📅 ${fmtDate(n.createdAt)}</div></div>`).join('');
+}
+</script>
+</body></html>
