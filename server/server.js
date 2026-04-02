@@ -39,7 +39,8 @@ app.use('/api', assignmentRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
-app.get('/:path*', (_req, res) => {
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) return next();
   res.sendFile(path.join(__dirname, 'client', 'index.html'));
 });
 
